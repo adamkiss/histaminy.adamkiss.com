@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tabuľka histamínov</title>
+
+	<style>/* Box sizing rules */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+	-moz-text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	text-size-adjust: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+	margin-block-end: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+	list-style: none;
+}
+
+/* Set core body defaults */
+body {
+	min-height: 100vh;
+	line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+	line-height: 1.1;
+}
+
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4 {
+	text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+	text-decoration-skip-ink: auto;
+	color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+	max-width: 100%;
+	display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+	min-height: 10em;
+}
+
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+	scroll-margin-block: 5ex;
+}
+
+html {
+	color-scheme: light dark;
+}
+
+body {
+	background: light-dark(#eee, #222);
+}
+
+main {
+	position: relative;
+	max-width: 1600px;
+	margin: 0 auto;
+	background: light-dark(#fff, #333);
+}
+
+header,
+section>ul {
+	display: contents;
+}
+
+section {
+	display: none;
+}
+
+section:has([data-visible]) {
+	display: block;
+}
+
+.bg-levels {
+	display: none;
+}
+
+@media screen and (min-width: 1023px) {
+	main {
+		display: grid;
+		/* make grid dense */
+		grid-auto-flow: dense;
+		grid-template-columns: repeat(4, 1fr);
+		;
+	}
+
+	header, section {
+		position: relative;
+		z-index: 1;
+	}
+
+	section {
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
+		grid-auto-flow: dense;
+	}
+
+	section:has([data-visible]) {
+		display: grid;
+	}
+
+	section>h1 {
+		grid-column: 1 / -1;
+	}
+
+	[is-0] {
+		grid-column: 1 / 2;
+	}
+
+	[is-1] {
+		grid-column: 2 / 3;
+	}
+
+	[is-2] {
+		grid-column: 3 / 4;
+	}
+
+	[is-3] {
+		grid-column: 4 / 5;
+	}
+
+	header>div {
+		position: sticky;
+		top: 0;
+	}
+
+	.bg-levels {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		position: absolute;
+		z-index: 0;
+		inset: 0;
+	}
+	.bg-level-0 {
+		background: transparent;
+	}
+	.bg-level-1 {
+		/* tailwind "lime" */
+		background: light-dark(
+			oklch(0.967 0.067 122.328003 / .5),
+			oklch(0.405 0.101 131.063004 / .1)
+		);
+	}
+	.bg-level-2 {
+		/* tailwind "amber" */
+		background: light-dark(
+			oklch(0.962 0.059 95.616997 / .5),
+			oklch(0.414 0.112 45.903999 / .2)
+		);
+	}
+	.bg-level-3 {
+		/* tailwind "red" */
+		background: light-dark(
+			oklch(0.885 0.062 18.334 / .5),
+			oklch(0.396 0.141 25.723 / .2)
+		);
+	}
+}
+</style></head>
+
+<body>
+	<main>
+		<div class="bg-levels">
+			<div class="bg-level-0"></div>
+			<div class="bg-level-1"></div>
+			<div class="bg-level-2"></div>
+			<div class="bg-level-3"></div>
+		</div>
+
+		<header>
+			<div>Level 0</div>
+			<div>Level 1</div>
+			<div>Level 2</div>
+			<div>Level 3</div>
+		</header>
+
+		<section>
+			<h1>Vajcia</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="prepelicie vajcia">prepeličie vajcia</li>
+				<li data-level-0 data-visible data-match="vajecny zltok">vaječný žĺtok</li>
+				<li data-level-2 data-visible data-match="slepacie vajcia">slepačie vajcia</li>
+				<li data-level-2 data-visible data-match="vajecny bielok">vaječný bielok</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Mliečne výrobky</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo">čerstvé maslo, smotanové maslo</li>
+				<li data-level-0 data-visible data-match="kozie mlieko">kozie mlieko</li>
+				<li data-level-0 data-visible data-match="ovcie mlieko">ovčie mlieko</li>
+				<li data-level-0 data-visible data-match="surove nespracovane">surové, nespracované</li>
+				<li data-level-0 data-visible data-match="sladka smotana neochutena bez ecok">sladká smotana (neochutená, bez éčok)</li>
+				<li data-level-0 data-visible data-match="srvatka">srvátka</li>
+				<li data-level-0 data-visible data-match="maslovy syr">maslový syr</li>
+				<li data-level-0 data-visible data-match="syr gouda nezrely mlady">syr gouda (nezrelý, mladý)</li>
+				<li data-level-0 data-visible data-match="syr kremovy neochuteny velmi mlady cerstvy">syr krémový, neochutený, veľmi mladý (čerstvý)</li>
+				<li data-level-0 data-visible data-match="syr macarpone">syr macarpone</li>
+				<li data-level-0 data-visible data-match="syr mozzarela">syr mozzarela</li>
+				<li data-level-0 data-visible data-match="syr ricotta">syr ricotta</li>
+				<li data-level-0 data-visible data-match="tvaroh">tvaroh</li>
+				<li data-level-1 data-visible data-match="cmar mierne kysly na zaciatku fermentacie">cmar (mierne kyslý, na začiatku fermentácie)</li>
+				<li data-level-1 data-visible data-match="jogurt neochuteny">jogurt (neochutený)</li>
+				<li data-level-1 data-visible data-match="kefir">kefír</li>
+				<li data-level-1 data-visible data-match="maslo s mliecnou kulturou">maslo s mliečnou kultúrou</li>
+				<li data-level-1 data-visible data-match="bezlaktozove mlieko">bezlaktózové mlieko</li>
+				<li data-level-1 data-visible data-match="susene mlieko">sušené mlieko</li>
+				<li data-level-1 data-visible data-match="kysla smotana">kyslá smotana</li>
+				<li data-level-1 data-visible data-match="syr fet">syr fet</li>
+				<li data-level-2 data-visible data-match="hotove syrove vyrobky s prisadami">hotové syrové výrobky s prísadami</li>
+				<li data-level-2 data-visible data-match="syr cedar">syr čedar</li>
+				<li data-level-2 data-visible data-match="syr fontina">syr fontina</li>
+				<li data-level-2 data-visible data-match="syr gouda vyzrety">syr gouda (vyzretý)</li>
+				<li data-level-2 data-visible data-match="syr plesnivy">syr plesnivý</li>
+				<li data-level-2 data-visible data-match="syr raclette">syr raclette</li>
+				<li data-level-2 data-visible data-match="syr roquefort">syr roquefort</li>
+				<li data-level-2 data-visible data-match="syr taveny">syr tavený</li>
+				<li data-level-2 data-visible data-match="syr z nepasterizovaneho mlieka">syr z nepasterizovaného mlieka</li>
+				<li data-level-2 data-visible data-match="vyrobky z nespracovaneho suroveho mlieka">výrobky z nespracovaného surového mlieka</li>
+				<li data-level-3 data-visible data-match="tvrdy syr">tvrdý syr</li>
+				<li data-level-3 data-visible data-match="vsetky zrejuce syry">všetky zrejúce syry</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Mäso</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="hovadzie cerstve">hovädzie (čerstvé)</li>
+				<li data-level-0 data-visible data-match="hydina">hydina</li>
+				<li data-level-0 data-visible data-match="kacacie">kačacie</li>
+				<li data-level-0 data-visible data-match="jazyk telaci hovadzi">jazyk (teľací, hovädzí)</li>
+				<li data-level-0 data-visible data-match="kuracie bez koze">kuracie (bez kože)</li>
+				<li data-level-0 data-visible data-match="mlete maso skonzumovane hned po pomleti">mleté mäso, skonzumované hneď po pomletí</li>
+				<li data-level-0 data-visible data-match="morcacie">morčacie</li>
+				<li data-level-0 data-visible data-match="prepelicie">prepeličie</li>
+				<li data-level-0 data-visible data-match="pstrosie">pštrosie</li>
+				<li data-level-0 data-visible data-match="telacie cerstve">teľacie (čerstvé)</li>
+				<li data-level-0 data-visible data-match="bravcova mast">bravčová masť</li>
+				<li data-level-0 data-visible data-match="sadlo">sadlo</li>
+				<li data-level-1 data-visible data-match="bravcove cerstve">bravčové (čerstvé)</li>
+				<li data-level-1 data-visible data-match="divina">divina</li>
+				<li data-level-1 data-visible data-match="zverina">zverina</li>
+				<li data-level-2 data-visible data-match="mlete maso vazene balene">mleté mäso (vážené, balené)</li>
+				<li data-level-2 data-visible data-match="vnutornosti">vnútornosti</li>
+				<li data-level-3 data-visible data-match="klobasy">klobásy</li>
+				<li data-level-3 data-visible data-match="maso susene">mäso sušené</li>
+				<li data-level-3 data-visible data-match="maso udene">mäso údené</li>
+				<li data-level-3 data-visible data-match="parky">párky</li>
+				<li data-level-3 data-visible data-match="susena sunka">sušená šunka</li>
+				<li data-level-3 data-visible data-match="sunka">šunka</li>
+				<li data-level-3 data-visible data-match="salama">saláma</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Ryby a morské plody</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="pstruh obycajny duhovany">pstruh obyčajný, dúhovaný</li>
+				<li data-level-0 data-visible data-match="ryba cerstvo chytena hlboko zmrazena">ryba (čerstvo chytená, hlboko zmrazená)</li>
+				<li data-level-0 data-visible data-match="sivon americky">sivoň americký</li>
+				<li data-level-2 data-visible data-match="vsetky druhy morskych plodov">všetky druhy morských plodov</li>
+				<li data-level-3 data-visible data-match="ryba udena">ryba údená</li>
+				<li data-level-3 data-visible data-match="ancovicky">ančovičky</li>
+				<li data-level-3 data-visible data-match="ryba kupovana chladena">ryba kupovaná, chladená</li>
+				<li data-level-3 data-visible data-match="tuniak">tuniak</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Rastlinné potraviny</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="amarant">amarant</li>
+				<li data-level-0 data-visible data-match="sladke zemiaky bataty">sladké zemiaky, bataty</li>
+				<li data-level-0 data-visible data-match="zemiaky">zemiaky</li>
+				<li data-level-0 data-visible data-match="kamut">kamut</li>
+				<li data-level-0 data-visible data-match="konopne semena">konopné semená</li>
+				<li data-level-0 data-visible data-match="kukurica sladka klas cerstva pasterizovana susena muka kasa kukuricne lupienky neochutene bez ecok">kukurica sladká: klas, čerstvá, pasterizovaná, sušená (múka, kaša), kukuričné lupienky (neochutené, bez éčok)</li>
+				<li data-level-0 data-visible data-match="maltodextrin">maltodextrín</li>
+				<li data-level-0 data-visible data-match="ovos">ovos</li>
+				<li data-level-0 data-visible data-match="psenica khorasan turanicum">pšenica khorasan (Turanicum)</li>
+				<li data-level-0 data-visible data-match="pseno">pšeno</li>
+				<li data-level-0 data-visible data-match="quinoa">quinoa</li>
+				<li data-level-0 data-visible data-match="ryza divoka indianska">ryža: divoká, indiánska</li>
+				<li data-level-0 data-visible data-match="ryzove chlebicky lupienky rezance">ryžové chlebíčky, lupienky, rezance</li>
+				<li data-level-0 data-visible data-match="palmovy skrob">palmový škrob</li>
+				<li data-level-0 data-visible data-match="spalda">špalda</li>
+				<li data-level-0 data-visible data-match="zizania">zizánia</li>
+				<li data-level-1 data-visible data-match="chlieb">chlieb</li>
+				<li data-level-1 data-visible data-match="jacmen">jačmeň</li>
+				<li data-level-1 data-visible data-match="pecivo">pečivo</li>
+				<li data-level-1 data-visible data-match="psenica">pšenica</li>
+				<li data-level-1 data-visible data-match="raz">raž</li>
+				<li data-level-1 data-visible data-match="zito">žito</li>
+				<li data-level-2 data-visible data-match="jacmenny slad slad">jačmenný slad, slad</li>
+				<li data-level-2 data-visible data-match="pohanka">pohánka</li>
+				<li data-level-2 data-visible data-match="psenicne klicky">pšeničné klíčky</li>
+				<li data-level-2 data-visible data-match="slnecnicove semienka">slnečnicové semienka</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Orechy a semiačka</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="makadamove orechy">makadamové orechy</li>
+				<li data-level-0 data-visible data-match="para orechy">para orechy</li>
+				<li data-level-0 data-visible data-match="tigrie oriesky neprazene">tigrie oriešky, nepražené</li>
+				<li data-level-0 data-visible data-match="pistacie">pistácie</li>
+				<li data-level-0 data-visible data-match="mandle neprazene">mandle nepražené</li>
+				<li data-level-0 data-visible data-match="chia semiacka">chia semiačka</li>
+				<li data-level-0 data-visible data-match="psyllium">psyllium</li>
+				<li data-level-0 data-visible data-match="tekvicove semiacka">tekvicové semiačka</li>
+				<li data-level-1 data-visible data-match="kesu">kešu</li>
+				<li data-level-1 data-visible data-match="lieskove orechy">lieskové orechy</li>
+				<li data-level-1 data-visible data-match="mandle prazene">mandle, pražené</li>
+				<li data-level-1 data-visible data-match="piniove semienka">píniové semienka</li>
+				<li data-level-1 data-visible data-match="gastany">gaštany</li>
+				<li data-level-1 data-visible data-match="sezam">sezam</li>
+				<li data-level-2 data-visible data-match="arasidy">arašidy</li>
+				<li data-level-2 data-visible data-match="chufa zemne mandle prazene">chufa, zemné mandle pražené</li>
+				<li data-level-2 data-visible data-match="tigrie oriesky prazene">tigrie oriešky pražené</li>
+				<li data-level-2 data-visible data-match="slnecnicove semiacka">slnečnicové semiačka</li>
+				<li data-level-3 data-visible data-match="vlasske orechy">vlašské orechy</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Tuky a oleje</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="kokosovy olej">kokosový olej</li>
+				<li data-level-0 data-visible data-match="bodliakovy olej">bodliakový olej</li>
+				<li data-level-0 data-visible data-match="margarin bez ecok">margarín bez éčok</li>
+				<li data-level-0 data-visible data-match="olivovy olej">olivový olej</li>
+				<li data-level-0 data-visible data-match="palmovy olej">palmový olej</li>
+				<li data-level-0 data-visible data-match="repkovy olej">repkový olej</li>
+				<li data-level-0 data-visible data-match="olej z ciernej rasce">olej z čiernej rasce</li>
+				<li data-level-0 data-visible data-match="olej z tekvicovych semien">olej z tekvicových semien</li>
+				<li data-level-0 data-visible data-match="tekvicovy olej">tekvicový olej</li>
+				<li data-level-1 data-visible data-match="slnecnicovy olej">slnečnicový olej</li>
+				<li data-level-1 data-visible data-match="makadamovy olej">makadámový olej</li>
+				<li data-level-2 data-visible data-match="olej z vlasskych orechov">olej z vlašských orechov</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Zelenina</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="articoky">artičoky</li>
+				<li data-level-0 data-visible data-match="asparagus">asparágus</li>
+				<li data-level-0 data-visible data-match="brokolica">brokolica</li>
+				<li data-level-0 data-visible data-match="cakanka">čakanka</li>
+				<li data-level-0 data-visible data-match="cibula biela s bielou supkou">cibuľa biela (s bielou šupkou)</li>
+				<li data-level-0 data-visible data-match="cuketa">cuketa</li>
+				<li data-level-0 data-visible data-match="dyna">dyňa</li>
+				<li data-level-0 data-visible data-match="fenikel">fenikel</li>
+				<li data-level-0 data-visible data-match="kapusta cervena cinska">kapusta (červená, čínska)</li>
+				<li data-level-0 data-visible data-match="karfiol">karfiol</li>
+				<li data-level-0 data-visible data-match="mrkva">mrkva</li>
+				<li data-level-0 data-visible data-match="paprika sladka">paprika sladká</li>
+				<li data-level-0 data-visible data-match="pastrnak">paštrnák</li>
+				<li data-level-0 data-visible data-match="polnicek">polníček</li>
+				<li data-level-0 data-visible data-match="redkovka biela cervena">reďkovka: biela, červená</li>
+				<li data-level-0 data-visible data-match="repa biela cervena">repa: biela, červená</li>
+				<li data-level-0 data-visible data-match="salat">šalát</li>
+				<li data-level-0 data-visible data-match="ladovy salat">ľadový šalát</li>
+				<li data-level-0 data-visible data-match="spargla">špargľa</li>
+				<li data-level-0 data-visible data-match="tekvica">tekvica</li>
+				<li data-level-0 data-visible data-match="uhorka">uhorka</li>
+				<li data-level-0 data-visible data-match="zeler">zeler</li>
+				<li data-level-0 data-visible data-match="zerucha">žerucha</li>
+				<li data-level-1 data-visible data-match="cesnak">cesnak</li>
+				<li data-level-1 data-visible data-match="chren">chren</li>
+				<li data-level-1 data-visible data-match="cibula">cibuľa</li>
+				<li data-level-1 data-visible data-match="hrach siaty cerstvy suseny">hrach siaty (čerstvý, sušený)</li>
+				<li data-level-1 data-visible data-match="kalerab">kaleráb</li>
+				<li data-level-1 data-visible data-match="kapusta ruzickova">kapusta ružičková</li>
+				<li data-level-1 data-visible data-match="kel">kel</li>
+				<li data-level-1 data-visible data-match="por">pór</li>
+				<li data-level-1 data-visible data-match="zelene fazulky">zelené fazuľky</li>
+				<li data-level-1 data-visible data-match="rukola">rukola</li>
+				<li data-level-2 data-visible data-match="bob">bôb</li>
+				<li data-level-2 data-visible data-match="cili papricky">čili papričky</li>
+				<li data-level-2 data-visible data-match="baklazan">baklažán</li>
+				<li data-level-2 data-visible data-match="cicer">cícer</li>
+				<li data-level-2 data-visible data-match="fazula borlotti">fazuľa borlotti</li>
+				<li data-level-2 data-visible data-match="zihlava">žihľava</li>
+				<li data-level-2 data-visible data-match="olivy">olivy</li>
+				<li data-level-2 data-visible data-match="paprika stiplava">paprika štipľavá</li>
+				<li data-level-2 data-visible data-match="paradajky">paradajky</li>
+				<li data-level-2 data-visible data-match="rajciaky">rajčiaky</li>
+				<li data-level-2 data-visible data-match="soja boby muka">sója (bôby, múka)</li>
+				<li data-level-2 data-visible data-match="sosovica">šošovica</li>
+				<li data-level-2 data-visible data-match="spenat">špenát</li>
+				<li data-level-2 data-visible data-match="strukoviny soja sosovica hrach fazula">strukoviny (sója, šošovica, hrach, fazuľa)</li>
+				<li data-level-2 data-visible data-match="zavarana zelenina">zaváraná zelenina</li>
+				<li data-level-3 data-visible data-match="kapusta kvasena">kapusta kvasená</li>
+				<li data-level-3 data-visible data-match="kapusta kysla">kapusta kyslá</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Ovocie</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="acerola">acerola</li>
+				<li data-level-0 data-visible data-match="banan cukrovy">banán cukrový</li>
+				<li data-level-0 data-visible data-match="baza cierna">baza čierna</li>
+				<li data-level-0 data-visible data-match="broskyna">broskyňa</li>
+				<li data-level-0 data-visible data-match="brusnice">brusnice</li>
+				<li data-level-0 data-visible data-match="ceresne">čerešne</li>
+				<li data-level-0 data-visible data-match="cucoriedky">čučoriedky</li>
+				<li data-level-0 data-visible data-match="datle susene">ďatle (sušené)</li>
+				<li data-level-0 data-visible data-match="dracie ovocie">dračie ovocie</li>
+				<li data-level-0 data-visible data-match="dula">dula</li>
+				<li data-level-0 data-visible data-match="egres">egreš</li>
+				<li data-level-0 data-visible data-match="goji">goji</li>
+				<li data-level-0 data-visible data-match="granatove jablko">granátové jablko</li>
+				<li data-level-0 data-visible data-match="hrozienka">hrozienka</li>
+				<li data-level-0 data-visible data-match="hrozno">hrozno</li>
+				<li data-level-0 data-visible data-match="hurmi kaki">hurmi kaki</li>
+				<li data-level-0 data-visible data-match="jablko">jablko</li>
+				<li data-level-0 data-visible data-match="kakaove maslo">kakaové maslo</li>
+				<li data-level-0 data-visible data-match="kaki">kaki</li>
+				<li data-level-0 data-visible data-match="karambola">karambola</li>
+				<li data-level-0 data-visible data-match="kokos kokosove mlieko">kokos, kokosové mlieko</li>
+				<li data-level-0 data-visible data-match="kustovnica cinska">kustovnica čínska</li>
+				<li data-level-0 data-visible data-match="lici">liči</li>
+				<li data-level-0 data-visible data-match="marhula">marhuľa</li>
+				<li data-level-0 data-visible data-match="melon okrem vodneho melonu">melón (okrem vodného melónu)</li>
+				<li data-level-0 data-visible data-match="nektarinka">nektárinka</li>
+				<li data-level-0 data-visible data-match="ostruzina">ostružina</li>
+				<li data-level-0 data-visible data-match="rakytnik">rakytník</li>
+				<li data-level-0 data-visible data-match="ribezla cervena cierna">ríbezľa červená, čierna</li>
+				<li data-level-0 data-visible data-match="visne">višne</li>
+				<li data-level-1 data-visible data-match="figy cerstve alebo susene">figy (čerstvé, alebo sušené)</li>
+				<li data-level-1 data-visible data-match="hruska">hruška</li>
+				<li data-level-1 data-visible data-match="mango">mango</li>
+				<li data-level-1 data-visible data-match="melon vodovy">melón vodový</li>
+				<li data-level-1 data-visible data-match="rebarbora">rebarbora</li>
+				<li data-level-1 data-visible data-match="sipky">šípky</li>
+				<li data-level-1 data-visible data-match="slivky susene slivky">slivky, sušené slivky</li>
+				<li data-level-2 data-visible data-match="ananas">ananás</li>
+				<li data-level-2 data-visible data-match="avokado">avokádo</li>
+				<li data-level-2 data-visible data-match="zrely banan">zrelý banán</li>
+				<li data-level-2 data-visible data-match="jahoda">jahoda</li>
+				<li data-level-2 data-visible data-match="kakao kakaovy prasok">kakao, kakaový prášok</li>
+				<li data-level-2 data-visible data-match="maliny">maliny</li>
+				<li data-level-2 data-visible data-match="mandarinky">mandarínky</li>
+				<li data-level-2 data-visible data-match="papaja">papája</li>
+				<li data-level-2 data-visible data-match="kiwi">kiwi</li>
+				<li data-level-3 data-visible data-match="limetka">limetka</li>
+				<li data-level-3 data-visible data-match="pomaranc">pomaranč</li>
+				<li data-level-3 data-visible data-match="pomarancova kora">pomarančová kôra</li>
+				<li data-level-3 data-visible data-match="citron">citrón</li>
+				<li data-level-3 data-visible data-match="citronova kora">citrónová kôra</li>
+				<li data-level-3 data-visible data-match="citrusy grapefruit grep">citrusy: grapefruit, grep</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Byliny</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="bazalka">bazalka</li>
+				<li data-level-0 data-visible data-match="mata">mäta</li>
+				<li data-level-0 data-visible data-match="oregano">oregano</li>
+				<li data-level-0 data-visible data-match="petrzlen">petržlen</li>
+				<li data-level-0 data-visible data-match="rozmarin">rozmarín</li>
+				<li data-level-0 data-visible data-match="salvia">šalvia</li>
+				<li data-level-0 data-visible data-match="saturejka">saturejka</li>
+				<li data-level-0 data-visible data-match="majoran">majorán</li>
+				<li data-level-0 data-visible data-match="tymian">tymian</li>
+				<li data-level-0 data-visible data-match="koriander">koriander</li>
+				<li data-level-1 data-visible data-match="cesnak medvedi">cesnak medvedí</li>
+				<li data-level-1 data-visible data-match="pazitka">pažítka</li>
+				<li data-level-1 data-visible data-match="kopor">kôpor</li>
+				<li data-level-2 data-visible data-match="senovka grecka">senovka grécka</li>
+				<li data-level-2 data-visible data-match="zihlava">žihľava</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Huby, hríby</h1>
+			<ul>
+				<li data-level-1 data-visible data-match="kvasnice vsetky druhy">kvasnice (všetky druhy)</li>
+				<li data-level-1 data-visible data-match="sampinony">šampiňóny</li>
+				<li data-level-2 data-visible data-match="hrib smrekovy">hríb smrekový</li>
+				<li data-level-2 data-visible data-match="hriby huby">hríby, huby</li>
+				<li data-level-3 data-visible data-match="cervene riasy">červené riasy</li>
+				<li data-level-3 data-visible data-match="chaluhy">chaluhy</li>
+				<li data-level-3 data-visible data-match="hnede riasy">hnedé riasy</li>
+				<li data-level-3 data-visible data-match="morske riasy">morské riasy</li>
+				<li data-level-3 data-visible data-match="riasy">riasy</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Sladidlá</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="agave nektar sirup">agáve nektár, sirup</li>
+				<li data-level-0 data-visible data-match="brezovy cukor xylitol xylit">brezový cukor, xylitol, xylit</li>
+				<li data-level-0 data-visible data-match="cukor repkovy trstinovy">cukor (repkový, trstinový</li>
+				<li data-level-0 data-visible data-match="dextroza">dextróza</li>
+				<li data-level-0 data-visible data-match="sorbitolovy cukor">sorbitolový cukor</li>
+				<li data-level-0 data-visible data-match="fruktoza">fruktóza</li>
+				<li data-level-0 data-visible data-match="glukoza">glukóza</li>
+				<li data-level-0 data-visible data-match="javorovy cukor">javorový cukor</li>
+				<li data-level-0 data-visible data-match="karamel">karamel</li>
+				<li data-level-0 data-visible data-match="laktoza">laktóza</li>
+				<li data-level-0 data-visible data-match="palmovy cukor">palmový cukor</li>
+				<li data-level-0 data-visible data-match="maltoza sladovy cukor">maltóza, sladový cukor</li>
+				<li data-level-0 data-visible data-match="med">med</li>
+				<li data-level-0 data-visible data-match="sacharoza">sacharóza</li>
+				<li data-level-1 data-visible data-match="umele sladidla">umelé sladidlá</li>
+				<li data-level-2 data-visible data-match="koren sladkeho drievka">koreň sladkého drievka</li>
+				<li data-level-2 data-visible data-match="sladovy extrakt">sladový extrakt</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Koreniny, dochucovadlá, arómy</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="jalovec bobule">jalovec (bobule)</li>
+				<li data-level-0 data-visible data-match="kardanom">kardanom</li>
+				<li data-level-0 data-visible data-match="klincek">klinček</li>
+				<li data-level-0 data-visible data-match="kmin">kmín</li>
+				<li data-level-0 data-visible data-match="koriander">koriander</li>
+				<li data-level-0 data-visible data-match="kurkuma">kurkuma</li>
+				<li data-level-0 data-visible data-match="ocot kvasny liehovy">ocot kvasný, liehový</li>
+				<li data-level-0 data-visible data-match="paprika sladka">paprika sladká</li>
+				<li data-level-0 data-visible data-match="rasca">rasca</li>
+				<li data-level-0 data-visible data-match="rasca cierna">rasca čierna</li>
+				<li data-level-0 data-visible data-match="bobkovy list">bobkový list</li>
+				<li data-level-0 data-visible data-match="rimsky koriander">rímsky koriander</li>
+				<li data-level-0 data-visible data-match="skorica">škorica</li>
+				<li data-level-0 data-visible data-match="tymian">tymian</li>
+				<li data-level-0 data-visible data-match="fenikel">fenikel</li>
+				<li data-level-1 data-visible data-match="mak">mak</li>
+				<li data-level-1 data-visible data-match="muskatovy oriesok">muškátový oriešok</li>
+				<li data-level-1 data-visible data-match="jablcny ocot">jablčný ocot</li>
+				<li data-level-1 data-visible data-match="vanilka vanilkovy prasok cukor extrakt">vanilka: vanilkový prášok, cukor, extrakt</li>
+				<li data-level-1 data-visible data-match="zazvor">zázvor</li>
+				<li data-level-2 data-visible data-match="biele korenie">biele korenie</li>
+				<li data-level-2 data-visible data-match="bujony">bujóny</li>
+				<li data-level-2 data-visible data-match="cierne korenie">čierne korenie</li>
+				<li data-level-2 data-visible data-match="zelene korenie">zelené korenie</li>
+				<li data-level-2 data-visible data-match="kari">karí</li>
+				<li data-level-2 data-visible data-match="kvasnicovy extrakt">kvasnicový extrakt</li>
+				<li data-level-2 data-visible data-match="paprika paliva">paprika palivá</li>
+				<li data-level-2 data-visible data-match="rasca rimska">rasca rímska</li>
+				<li data-level-2 data-visible data-match="sojova omacka">sójová omáčka</li>
+				<li data-level-2 data-visible data-match="horcicne semienko">horčičné semienko</li>
+				<li data-level-2 data-visible data-match="klinceky">klinčeky</li>
+				<li data-level-3 data-visible data-match="ocot balzamiko">ocot balzamiko</li>
+				<li data-level-3 data-visible data-match="vinny ocot z bieleho cerveneho vina">vinný ocot (z bieleho, červeného vína)</li>
+				<li data-level-3 data-visible data-match="sojova omacka">sójová omáčka</li>
+				<li data-level-3 data-visible data-match="horcica">horčica</li>
+				<li data-level-3 data-visible data-match="kecup">kečup</li>
+			</ul>
+		</section>
+				<section>
+			<h1>Nápoje</h1>
+			<ul>
+				<li data-level-0 data-visible data-match="voda z vodovodu">voda z vodovodu</li>
+				<li data-level-0 data-visible data-match="mineralna voda neperliva">minerálna voda, neperlivá</li>
+				<li data-level-0 data-visible data-match="caj verbena">čaj verbena</li>
+				<li data-level-0 data-visible data-match="kamilkovy caj">kamilkový čaj</li>
+				<li data-level-0 data-visible data-match="lipovy caj">lipový čaj</li>
+				<li data-level-0 data-visible data-match="roiboos">roiboos</li>
+				<li data-level-0 data-visible data-match="salviovy caj">šalviový čaj</li>
+				<li data-level-0 data-visible data-match="matovy caj">mätový čaj</li>
+				<li data-level-0 data-visible data-match="brusnicovy nektar">brusnicový nektár</li>
+				<li data-level-0 data-visible data-match="bazovy sirup">bazový sirup</li>
+				<li data-level-1 data-visible data-match="termalna voda s obsahom siry fluoru jodu kyseliny uhlicitej">termálna voda s obsahom síry, fluóru, jódu, kyseliny uhličitej</li>
+				<li data-level-1 data-visible data-match="bylinne caje z liecivych bylin">bylinné čaje z liečivých bylín</li>
+				<li data-level-1 data-visible data-match="mate">maté</li>
+				<li data-level-1 data-visible data-match="zeleny caj">zelený čaj</li>
+				<li data-level-1 data-visible data-match="zihlavovy caj">žihľavový čaj</li>
+				<li data-level-1 data-visible data-match="sipkovy caj">šípkový čaj</li>
+				<li data-level-1 data-visible data-match="pomarancovy dzus">pomarančový džús</li>
+				<li data-level-1 data-visible data-match="limonady">limonády</li>
+				<li data-level-1 data-visible data-match="sladke perlive napoje">sladké perlivé nápoje</li>
+				<li data-level-1 data-visible data-match="soda">sóda</li>
+				<li data-level-1 data-visible data-match="coca cola">coca - cola</li>
+				<li data-level-1 data-visible data-match="cola">cola</li>
+				<li data-level-1 data-visible data-match="kava">káva</li>
+				<li data-level-1 data-visible data-match="espresso">espresso</li>
+				<li data-level-1 data-visible data-match="ovseny napoj">ovsený nápoj</li>
+				<li data-level-1 data-visible data-match="ryzove mlieko">ryžové mlieko</li>
+				<li data-level-1 data-visible data-match="bezhistaminove vino">bezhistamínové víno</li>
+				<li data-level-2 data-visible data-match="paradajkovy dzus">paradajkový džús</li>
+				<li data-level-2 data-visible data-match="energeticke napoje">energetické nápoje</li>
+				<li data-level-2 data-visible data-match="cokoladove napoje">čokoládové nápoje</li>
+				<li data-level-2 data-visible data-match="kakaove napoje">kakaové nápoje</li>
+				<li data-level-2 data-visible data-match="varena cokolada">varená čokoláda</li>
+				<li data-level-2 data-visible data-match="sojove mlieko">sójové mlieko</li>
+				<li data-level-2 data-visible data-match="brandy">brandy</li>
+				<li data-level-2 data-visible data-match="liehovina cira">liehovina, číra</li>
+				<li data-level-2 data-visible data-match="palenka cira">pálenka, číra</li>
+				<li data-level-2 data-visible data-match="pivo">pivo</li>
+				<li data-level-2 data-visible data-match="rum">rum</li>
+				<li data-level-2 data-visible data-match="vino biele">víno biele</li>
+				<li data-level-3 data-visible data-match="cierny caj">čierny čaj</li>
+				<li data-level-3 data-visible data-match="citrusove dzusy">citrusové džúsy</li>
+				<li data-level-3 data-visible data-match="alkohol etanol">alkohol, etanol</li>
+				<li data-level-3 data-visible data-match="liehovina">liehovina</li>
+				<li data-level-3 data-visible data-match="palenka prifarbena ochutena">pálenka prifarbená, ochutená</li>
+				<li data-level-3 data-visible data-match="sampanske">šampanské</li>
+				<li data-level-3 data-visible data-match="sumive vino">šumivé víno</li>
+				<li data-level-3 data-visible data-match="vino">víno</li>
+				<li data-level-3 data-visible data-match="vino cervene">víno červené</li>
+			</ul>
+		</section>
+			</main>
+</body>
+
+</html>

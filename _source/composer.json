@@ -1,0 +1,15 @@
+{
+    "name": "adamkiss/histaminy.adamkiss.com",
+    "description": "Rough informational list of food and its histamine levels",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Kiss",
+            "email": "iam@adamkiss.com"
+        }
+    ],
+    "require": {
+        "cocur/slugify": "^4.6"
+    }
+}
