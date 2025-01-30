@@ -494,6 +494,19 @@ $slugify->activateRuleSet('slovak');
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tabuľka histamínov</title>
 
+	<meta property="og:image" content="https://histaminy.adamkiss.com/histaminy.adamkiss.com-meta.jpg"/>
+	<meta property="og:image:alt" content="Ikona Tabuľky histamínov a nadpis 'Tabuľka histamínov'"/>
+	<meta property="og:site_name" content="Tabuľka histamínov"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:title" content="Tabuľka histamínov by Adam Kiss"/>
+	<meta property="og:url" content="https://histaminy.adamkiss.com"/>
+	<meta property="og:description" content="Tabuľka potravín a ich levelu histamínov, s vyhľadávaním a prehľadným dizajnom"/>
+
+	<meta name="theme-color" content="#71bb64">
+	<link rel="apple-touch-icon" sizes="180x180" href="/histaminy-60@3x.png" type="image/png">
+	<link rel="apple-touch-icon" href="/histaminy-60@1x.png" type="image/png">
+	<link rel="icon" href="/histaminy-32@1x.png" type="image/png">
+
 	<?= '<style>' . file_get_contents(__DIR__ . '/index.css') . '</style>'; ?>
 	<script src="/alpinejs@3.14.6.min.js" defer></script>
 </head>
