@@ -103,13 +103,19 @@ html {
 
 body {
 	background: light-dark(#eee, #222);
+	font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 main {
 	position: relative;
 	max-width: 1600px;
 	margin: 0 auto;
-	background: light-dark(#fff, #333);
+	background: light-dark(#fff, transparent);
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 2em;
 }
 
 header,
@@ -117,7 +123,51 @@ section>ul {
 	display: contents;
 }
 
+header {
+	position: relative;
+	z-index: 10;
+	background: light-dark(#eee, #222);
+}
+
+header .header {
+	background: light-dark(#eee, #222);
+	grid-column: 1 / -1;
+	padding: .5em 1em;
+	z-index: 20;
+}
+header .header h1 {
+	margin-top: 0;
+}
+
+#search {
+	margin-top: 0.5em;
+	width: 100%;
+	padding: .25em .5em;
+}
+
 section {
+	padding-bottom: 0.25em;
+}
+
+section h1 {
+	background: light-dark(#eee, #222);
+	padding: .75em .5em .25em;
+	margin: 0 0 .25em;
+}
+
+section li, header [data-level] {
+	display: flex;
+	padding: .5em 1em;
+	list-style: none;
+	background: light-dark(#eee, #222);
+	justify-content: space-between;
+}
+
+section, header [data-level] {
+	display: none;
+}
+
+section li:not([data-visible]) {
 	display: none;
 }
 
@@ -127,6 +177,35 @@ section:has([data-visible]) {
 
 .bg-levels {
 	display: none;
+}
+
+.bg-level-0, [data-level-0] {
+	/* tailwind "lime" */
+	background: light-dark(
+		oklch(0.967 0.067 122.328003 / .5),
+		oklch(0.405 0.101 131.063004 / .1)
+	);
+}
+.bg-level-1, [data-level-1] {
+	/* tailwind "yellow" */
+	background: light-dark(
+		oklch(0.973 0.071 103.193001 / .5),
+		oklch(0.681 0.162 75.834 / .08)
+	);
+}
+.bg-level-2, [data-level-2] {
+	/* tailwind "amber" */
+	background: light-dark(
+		oklch(0.962 0.059 95.616997 / .5),
+		oklch(0.414 0.112 45.903999 / .2)
+	);
+}
+.bg-level-3, [data-level-3] {
+	/* tailwind "red" */
+	background: light-dark(
+		oklch(0.885 0.062 18.334 / .5),
+		oklch(0.396 0.141 25.723 / .2)
+	);
 }
 
 @media screen and (min-width: 1023px) {
@@ -143,6 +222,25 @@ section:has([data-visible]) {
 		z-index: 1;
 	}
 
+	header .header {
+		display: flex;
+		align-items: center;
+	}
+
+	header .header h1, .search-wrapper {
+		width: 50%;
+	}
+	#search {
+		margin-top: 0;
+	}
+
+	header [data-level] {
+		display: flex;
+		padding: 0.5em 1em;
+		z-index: 10;
+		border-bottom: 1px solid light-dark(#eee, #222);
+	}
+
 	section {
 		grid-column: 1 / -1;
 		grid-template-columns: subgrid;
@@ -152,28 +250,35 @@ section:has([data-visible]) {
 	section:has([data-visible]) {
 		display: grid;
 	}
-
 	section>h1 {
 		grid-column: 1 / -1;
 	}
 
-	[is-0] {
+	section li {
+		background: transparent !important;
+		padding-block: .25em;
+	}
+	section li [data-level-emoji] {
+		display: none;
+	}
+
+	[data-level-0] {
 		grid-column: 1 / 2;
 	}
 
-	[is-1] {
+	[data-level-1] {
 		grid-column: 2 / 3;
 	}
 
-	[is-2] {
+	[data-level-2] {
 		grid-column: 3 / 4;
 	}
 
-	[is-3] {
+	[data-level-3] {
 		grid-column: 4 / 5;
 	}
 
-	header>div {
+	header>div[data-level] {
 		position: sticky;
 		top: 0;
 	}
@@ -182,476 +287,509 @@ section:has([data-visible]) {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		position: absolute;
-		z-index: 0;
+		z-index: -1;
 		inset: 0;
 	}
-	.bg-level-0 {
-		background: transparent;
+}
+
+#brand {
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+	margin: var(--step--2);
+	animation: potato 10s linear infinite;
+}
+
+@keyframes potato {
+	0% {
+		transform: rotate(0);
 	}
-	.bg-level-1 {
-		/* tailwind "lime" */
-		background: light-dark(
-			oklch(0.967 0.067 122.328003 / .5),
-			oklch(0.405 0.101 131.063004 / .1)
-		);
-	}
-	.bg-level-2 {
-		/* tailwind "amber" */
-		background: light-dark(
-			oklch(0.962 0.059 95.616997 / .5),
-			oklch(0.414 0.112 45.903999 / .2)
-		);
-	}
-	.bg-level-3 {
-		/* tailwind "red" */
-		background: light-dark(
-			oklch(0.885 0.062 18.334 / .5),
-			oklch(0.396 0.141 25.723 / .2)
-		);
+
+	100% {
+		transform: rotate(360deg);
 	}
 }
-</style></head>
+</style>	<script src="/alpinejs@3.14.6.min.js" defer></script>
+</head>
 
 <body>
 	<main>
-		<div class="bg-levels">
-			<div class="bg-level-0"></div>
-			<div class="bg-level-1"></div>
-			<div class="bg-level-2"></div>
-			<div class="bg-level-3"></div>
-		</div>
-
 		<header>
-			<div>Level 0</div>
-			<div>Level 1</div>
-			<div>Level 2</div>
-			<div>Level 3</div>
+			<div class="header"><!-- 🤷🏻 -->
+				<h1>Tabuľka histamínov</h1>
+				<div x-cloak class="search-wrapper"
+					x-data="{items: [], search: ''}"
+					x-init="
+						items = Array.from(document.querySelectorAll('li[data-visible]'))
+							.map(item => ({item, show: true, fmt: item.dataset?.match ?? ''}));
+
+						console . log(items);
+
+						$watch('search', value => {
+							if (!value || value === '' || value.length < 2) {
+								items.forEach(item => item.show = true);
+							} else {
+								const val = value.toLowerCase();
+								if (val.includes(' ')) {
+									val = val.split(' ').filter(v => v.length > 1).join(' ');
+									items.forEach(item => {
+										item.show = val.every(p => item.fmt.includes(p));
+									});
+								} else {
+									items.forEach(item => {
+										item.show = item.fmt.includes(val);
+									});
+								}
+							}
+							items.forEach(item => item.item.toggleAttribute('data-visible', item.show));
+						});
+					"
+				>
+					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search" placeholder="Nájdi mi…" />
+				</div>
+			</div>
+			<div data-level data-level-0><span>Level 0</span> <span data-level-emoji>✅</span></div>
+			<div data-level data-level-1><span>Level 1</span> <span data-level-emoji>⚠️</span></div>
+			<div data-level data-level-2><span>Level 2</span> <span data-level-emoji>🚫🚫</span></div>
+			<div data-level data-level-3><span>Level 3</span> <span data-level-emoji>❌❌❌</span></div>
 		</header>
+
 
 		<section>
 			<h1>Vajcia</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="prepelicie vajcia">prepeličie vajcia</li>
-				<li data-level-0 data-visible data-match="vajecny zltok">vaječný žĺtok</li>
-				<li data-level-2 data-visible data-match="slepacie vajcia">slepačie vajcia</li>
-				<li data-level-2 data-visible data-match="vajecny bielok">vaječný bielok</li>
+				<li data-level-0 data-visible data-match="prepelicie vajcia"><span>prepeličie vajcia</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="vajecny zltok"><span>vaječný žĺtok</span><span data-level-emoji>✅</span></li>
+				<li data-level-2 data-visible data-match="slepacie vajcia"><span>slepačie vajcia</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="vajecny bielok"><span>vaječný bielok</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Mliečne výrobky</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo">čerstvé maslo, smotanové maslo</li>
-				<li data-level-0 data-visible data-match="kozie mlieko">kozie mlieko</li>
-				<li data-level-0 data-visible data-match="ovcie mlieko">ovčie mlieko</li>
-				<li data-level-0 data-visible data-match="surove nespracovane">surové, nespracované</li>
-				<li data-level-0 data-visible data-match="sladka smotana neochutena bez ecok">sladká smotana (neochutená, bez éčok)</li>
-				<li data-level-0 data-visible data-match="srvatka">srvátka</li>
-				<li data-level-0 data-visible data-match="maslovy syr">maslový syr</li>
-				<li data-level-0 data-visible data-match="syr gouda nezrely mlady">syr gouda (nezrelý, mladý)</li>
-				<li data-level-0 data-visible data-match="syr kremovy neochuteny velmi mlady cerstvy">syr krémový, neochutený, veľmi mladý (čerstvý)</li>
-				<li data-level-0 data-visible data-match="syr macarpone">syr macarpone</li>
-				<li data-level-0 data-visible data-match="syr mozzarela">syr mozzarela</li>
-				<li data-level-0 data-visible data-match="syr ricotta">syr ricotta</li>
-				<li data-level-0 data-visible data-match="tvaroh">tvaroh</li>
-				<li data-level-1 data-visible data-match="cmar mierne kysly na zaciatku fermentacie">cmar (mierne kyslý, na začiatku fermentácie)</li>
-				<li data-level-1 data-visible data-match="jogurt neochuteny">jogurt (neochutený)</li>
-				<li data-level-1 data-visible data-match="kefir">kefír</li>
-				<li data-level-1 data-visible data-match="maslo s mliecnou kulturou">maslo s mliečnou kultúrou</li>
-				<li data-level-1 data-visible data-match="bezlaktozove mlieko">bezlaktózové mlieko</li>
-				<li data-level-1 data-visible data-match="susene mlieko">sušené mlieko</li>
-				<li data-level-1 data-visible data-match="kysla smotana">kyslá smotana</li>
-				<li data-level-1 data-visible data-match="syr fet">syr fet</li>
-				<li data-level-2 data-visible data-match="hotove syrove vyrobky s prisadami">hotové syrové výrobky s prísadami</li>
-				<li data-level-2 data-visible data-match="syr cedar">syr čedar</li>
-				<li data-level-2 data-visible data-match="syr fontina">syr fontina</li>
-				<li data-level-2 data-visible data-match="syr gouda vyzrety">syr gouda (vyzretý)</li>
-				<li data-level-2 data-visible data-match="syr plesnivy">syr plesnivý</li>
-				<li data-level-2 data-visible data-match="syr raclette">syr raclette</li>
-				<li data-level-2 data-visible data-match="syr roquefort">syr roquefort</li>
-				<li data-level-2 data-visible data-match="syr taveny">syr tavený</li>
-				<li data-level-2 data-visible data-match="syr z nepasterizovaneho mlieka">syr z nepasterizovaného mlieka</li>
-				<li data-level-2 data-visible data-match="vyrobky z nespracovaneho suroveho mlieka">výrobky z nespracovaného surového mlieka</li>
-				<li data-level-3 data-visible data-match="tvrdy syr">tvrdý syr</li>
-				<li data-level-3 data-visible data-match="vsetky zrejuce syry">všetky zrejúce syry</li>
+				<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo"><span>čerstvé maslo, smotanové maslo</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kozie mlieko"><span>kozie mlieko</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ovcie mlieko"><span>ovčie mlieko</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="surove nespracovane"><span>surové, nespracované</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sladka smotana neochutena bez ecok"><span>sladká smotana (neochutená, bez éčok)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="srvatka"><span>srvátka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="maslovy syr"><span>maslový syr</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="syr gouda nezrely mlady"><span>syr gouda (nezrelý, mladý)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="syr kremovy neochuteny velmi mlady cerstvy"><span>syr krémový, neochutený, veľmi mladý (čerstvý)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="syr macarpone"><span>syr macarpone</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="syr mozzarela"><span>syr mozzarela</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="syr ricotta"><span>syr ricotta</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tvaroh"><span>tvaroh</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="cmar mierne kysly na zaciatku fermentacie"><span>cmar (mierne kyslý, na začiatku fermentácie)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="jogurt neochuteny"><span>jogurt (neochutený)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kefir"><span>kefír</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="maslo s mliecnou kulturou"><span>maslo s mliečnou kultúrou</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="bezlaktozove mlieko"><span>bezlaktózové mlieko</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="susene mlieko"><span>sušené mlieko</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kysla smotana"><span>kyslá smotana</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="syr fet"><span>syr fet</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="hotove syrove vyrobky s prisadami"><span>hotové syrové výrobky s prísadami</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr cedar"><span>syr čedar</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr fontina"><span>syr fontina</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr gouda vyzrety"><span>syr gouda (vyzretý)</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr plesnivy"><span>syr plesnivý</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr raclette"><span>syr raclette</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr roquefort"><span>syr roquefort</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr taveny"><span>syr tavený</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="syr z nepasterizovaneho mlieka"><span>syr z nepasterizovaného mlieka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="vyrobky z nespracovaneho suroveho mlieka"><span>výrobky z nespracovaného surového mlieka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="tvrdy syr"><span>tvrdý syr</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="vsetky zrejuce syry"><span>všetky zrejúce syry</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Mäso</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="hovadzie cerstve">hovädzie (čerstvé)</li>
-				<li data-level-0 data-visible data-match="hydina">hydina</li>
-				<li data-level-0 data-visible data-match="kacacie">kačacie</li>
-				<li data-level-0 data-visible data-match="jazyk telaci hovadzi">jazyk (teľací, hovädzí)</li>
-				<li data-level-0 data-visible data-match="kuracie bez koze">kuracie (bez kože)</li>
-				<li data-level-0 data-visible data-match="mlete maso skonzumovane hned po pomleti">mleté mäso, skonzumované hneď po pomletí</li>
-				<li data-level-0 data-visible data-match="morcacie">morčacie</li>
-				<li data-level-0 data-visible data-match="prepelicie">prepeličie</li>
-				<li data-level-0 data-visible data-match="pstrosie">pštrosie</li>
-				<li data-level-0 data-visible data-match="telacie cerstve">teľacie (čerstvé)</li>
-				<li data-level-0 data-visible data-match="bravcova mast">bravčová masť</li>
-				<li data-level-0 data-visible data-match="sadlo">sadlo</li>
-				<li data-level-1 data-visible data-match="bravcove cerstve">bravčové (čerstvé)</li>
-				<li data-level-1 data-visible data-match="divina">divina</li>
-				<li data-level-1 data-visible data-match="zverina">zverina</li>
-				<li data-level-2 data-visible data-match="mlete maso vazene balene">mleté mäso (vážené, balené)</li>
-				<li data-level-2 data-visible data-match="vnutornosti">vnútornosti</li>
-				<li data-level-3 data-visible data-match="klobasy">klobásy</li>
-				<li data-level-3 data-visible data-match="maso susene">mäso sušené</li>
-				<li data-level-3 data-visible data-match="maso udene">mäso údené</li>
-				<li data-level-3 data-visible data-match="parky">párky</li>
-				<li data-level-3 data-visible data-match="susena sunka">sušená šunka</li>
-				<li data-level-3 data-visible data-match="sunka">šunka</li>
-				<li data-level-3 data-visible data-match="salama">saláma</li>
+				<li data-level-0 data-visible data-match="hovadzie cerstve"><span>hovädzie (čerstvé)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="hydina"><span>hydina</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kacacie"><span>kačacie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="jazyk telaci hovadzi"><span>jazyk (teľací, hovädzí)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kuracie bez koze"><span>kuracie (bez kože)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="mlete maso skonzumovane hned po pomleti"><span>mleté mäso, skonzumované hneď po pomletí</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="morcacie"><span>morčacie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="prepelicie"><span>prepeličie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="pstrosie"><span>pštrosie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="telacie cerstve"><span>teľacie (čerstvé)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="bravcova mast"><span>bravčová masť</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sadlo"><span>sadlo</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="bravcove cerstve"><span>bravčové (čerstvé)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="divina"><span>divina</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zverina"><span>zverina</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="mlete maso vazene balene"><span>mleté mäso (vážené, balené)</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="vnutornosti"><span>vnútornosti</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="klobasy"><span>klobásy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="maso susene"><span>mäso sušené</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="maso udene"><span>mäso údené</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="parky"><span>párky</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="susena sunka"><span>sušená šunka</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="sunka"><span>šunka</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="salama"><span>saláma</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Ryby a morské plody</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="pstruh obycajny duhovany">pstruh obyčajný, dúhovaný</li>
-				<li data-level-0 data-visible data-match="ryba cerstvo chytena hlboko zmrazena">ryba (čerstvo chytená, hlboko zmrazená)</li>
-				<li data-level-0 data-visible data-match="sivon americky">sivoň americký</li>
-				<li data-level-2 data-visible data-match="vsetky druhy morskych plodov">všetky druhy morských plodov</li>
-				<li data-level-3 data-visible data-match="ryba udena">ryba údená</li>
-				<li data-level-3 data-visible data-match="ancovicky">ančovičky</li>
-				<li data-level-3 data-visible data-match="ryba kupovana chladena">ryba kupovaná, chladená</li>
-				<li data-level-3 data-visible data-match="tuniak">tuniak</li>
+				<li data-level-0 data-visible data-match="pstruh obycajny duhovany"><span>pstruh obyčajný, dúhovaný</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ryba cerstvo chytena hlboko zmrazena"><span>ryba (čerstvo chytená, hlboko zmrazená)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sivon americky"><span>sivoň americký</span><span data-level-emoji>✅</span></li>
+				<li data-level-2 data-visible data-match="vsetky druhy morskych plodov"><span>všetky druhy morských plodov</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="ryba udena"><span>ryba údená</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="ancovicky"><span>ančovičky</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="ryba kupovana chladena"><span>ryba kupovaná, chladená</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="tuniak"><span>tuniak</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Rastlinné potraviny</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="amarant">amarant</li>
-				<li data-level-0 data-visible data-match="sladke zemiaky bataty">sladké zemiaky, bataty</li>
-				<li data-level-0 data-visible data-match="zemiaky">zemiaky</li>
-				<li data-level-0 data-visible data-match="kamut">kamut</li>
-				<li data-level-0 data-visible data-match="konopne semena">konopné semená</li>
-				<li data-level-0 data-visible data-match="kukurica sladka klas cerstva pasterizovana susena muka kasa kukuricne lupienky neochutene bez ecok">kukurica sladká: klas, čerstvá, pasterizovaná, sušená (múka, kaša), kukuričné lupienky (neochutené, bez éčok)</li>
-				<li data-level-0 data-visible data-match="maltodextrin">maltodextrín</li>
-				<li data-level-0 data-visible data-match="ovos">ovos</li>
-				<li data-level-0 data-visible data-match="psenica khorasan turanicum">pšenica khorasan (Turanicum)</li>
-				<li data-level-0 data-visible data-match="pseno">pšeno</li>
-				<li data-level-0 data-visible data-match="quinoa">quinoa</li>
-				<li data-level-0 data-visible data-match="ryza divoka indianska">ryža: divoká, indiánska</li>
-				<li data-level-0 data-visible data-match="ryzove chlebicky lupienky rezance">ryžové chlebíčky, lupienky, rezance</li>
-				<li data-level-0 data-visible data-match="palmovy skrob">palmový škrob</li>
-				<li data-level-0 data-visible data-match="spalda">špalda</li>
-				<li data-level-0 data-visible data-match="zizania">zizánia</li>
-				<li data-level-1 data-visible data-match="chlieb">chlieb</li>
-				<li data-level-1 data-visible data-match="jacmen">jačmeň</li>
-				<li data-level-1 data-visible data-match="pecivo">pečivo</li>
-				<li data-level-1 data-visible data-match="psenica">pšenica</li>
-				<li data-level-1 data-visible data-match="raz">raž</li>
-				<li data-level-1 data-visible data-match="zito">žito</li>
-				<li data-level-2 data-visible data-match="jacmenny slad slad">jačmenný slad, slad</li>
-				<li data-level-2 data-visible data-match="pohanka">pohánka</li>
-				<li data-level-2 data-visible data-match="psenicne klicky">pšeničné klíčky</li>
-				<li data-level-2 data-visible data-match="slnecnicove semienka">slnečnicové semienka</li>
+				<li data-level-0 data-visible data-match="amarant"><span>amarant</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sladke zemiaky bataty"><span>sladké zemiaky, bataty</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="zemiaky"><span>zemiaky</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kamut"><span>kamut</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="konopne semena"><span>konopné semená</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kukurica sladka klas cerstva pasterizovana susena muka kasa kukuricne lupienky neochutene bez ecok"><span>kukurica sladká: klas, čerstvá, pasterizovaná, sušená (múka, kaša), kukuričné lupienky (neochutené, bez éčok)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="maltodextrin"><span>maltodextrín</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ovos"><span>ovos</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="psenica khorasan turanicum"><span>pšenica khorasan (Turanicum)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="pseno"><span>pšeno</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="quinoa"><span>quinoa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ryza divoka indianska"><span>ryža: divoká, indiánska</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ryzove chlebicky lupienky rezance"><span>ryžové chlebíčky, lupienky, rezance</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="palmovy skrob"><span>palmový škrob</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="spalda"><span>špalda</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="zizania"><span>zizánia</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="chlieb"><span>chlieb</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="jacmen"><span>jačmeň</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="pecivo"><span>pečivo</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="psenica"><span>pšenica</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="raz"><span>raž</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zito"><span>žito</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="jacmenny slad slad"><span>jačmenný slad, slad</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="pohanka"><span>pohánka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="psenicne klicky"><span>pšeničné klíčky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="slnecnicove semienka"><span>slnečnicové semienka</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Orechy a semiačka</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="makadamove orechy">makadamové orechy</li>
-				<li data-level-0 data-visible data-match="para orechy">para orechy</li>
-				<li data-level-0 data-visible data-match="tigrie oriesky neprazene">tigrie oriešky, nepražené</li>
-				<li data-level-0 data-visible data-match="pistacie">pistácie</li>
-				<li data-level-0 data-visible data-match="mandle neprazene">mandle nepražené</li>
-				<li data-level-0 data-visible data-match="chia semiacka">chia semiačka</li>
-				<li data-level-0 data-visible data-match="psyllium">psyllium</li>
-				<li data-level-0 data-visible data-match="tekvicove semiacka">tekvicové semiačka</li>
-				<li data-level-1 data-visible data-match="kesu">kešu</li>
-				<li data-level-1 data-visible data-match="lieskove orechy">lieskové orechy</li>
-				<li data-level-1 data-visible data-match="mandle prazene">mandle, pražené</li>
-				<li data-level-1 data-visible data-match="piniove semienka">píniové semienka</li>
-				<li data-level-1 data-visible data-match="gastany">gaštany</li>
-				<li data-level-1 data-visible data-match="sezam">sezam</li>
-				<li data-level-2 data-visible data-match="arasidy">arašidy</li>
-				<li data-level-2 data-visible data-match="chufa zemne mandle prazene">chufa, zemné mandle pražené</li>
-				<li data-level-2 data-visible data-match="tigrie oriesky prazene">tigrie oriešky pražené</li>
-				<li data-level-2 data-visible data-match="slnecnicove semiacka">slnečnicové semiačka</li>
-				<li data-level-3 data-visible data-match="vlasske orechy">vlašské orechy</li>
+				<li data-level-0 data-visible data-match="makadamove orechy"><span>makadamové orechy</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="para orechy"><span>para orechy</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tigrie oriesky neprazene"><span>tigrie oriešky, nepražené</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="pistacie"><span>pistácie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="mandle neprazene"><span>mandle nepražené</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="chia semiacka"><span>chia semiačka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="psyllium"><span>psyllium</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tekvicove semiacka"><span>tekvicové semiačka</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="kesu"><span>kešu</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="lieskove orechy"><span>lieskové orechy</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="mandle prazene"><span>mandle, pražené</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="piniove semienka"><span>píniové semienka</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="gastany"><span>gaštany</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="sezam"><span>sezam</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="arasidy"><span>arašidy</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="chufa zemne mandle prazene"><span>chufa, zemné mandle pražené</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="tigrie oriesky prazene"><span>tigrie oriešky pražené</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="slnecnicove semiacka"><span>slnečnicové semiačka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="vlasske orechy"><span>vlašské orechy</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Tuky a oleje</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="kokosovy olej">kokosový olej</li>
-				<li data-level-0 data-visible data-match="bodliakovy olej">bodliakový olej</li>
-				<li data-level-0 data-visible data-match="margarin bez ecok">margarín bez éčok</li>
-				<li data-level-0 data-visible data-match="olivovy olej">olivový olej</li>
-				<li data-level-0 data-visible data-match="palmovy olej">palmový olej</li>
-				<li data-level-0 data-visible data-match="repkovy olej">repkový olej</li>
-				<li data-level-0 data-visible data-match="olej z ciernej rasce">olej z čiernej rasce</li>
-				<li data-level-0 data-visible data-match="olej z tekvicovych semien">olej z tekvicových semien</li>
-				<li data-level-0 data-visible data-match="tekvicovy olej">tekvicový olej</li>
-				<li data-level-1 data-visible data-match="slnecnicovy olej">slnečnicový olej</li>
-				<li data-level-1 data-visible data-match="makadamovy olej">makadámový olej</li>
-				<li data-level-2 data-visible data-match="olej z vlasskych orechov">olej z vlašských orechov</li>
+				<li data-level-0 data-visible data-match="kokosovy olej"><span>kokosový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="bodliakovy olej"><span>bodliakový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="margarin bez ecok"><span>margarín bez éčok</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="olivovy olej"><span>olivový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="palmovy olej"><span>palmový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="repkovy olej"><span>repkový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="olej z ciernej rasce"><span>olej z čiernej rasce</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="olej z tekvicovych semien"><span>olej z tekvicových semien</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tekvicovy olej"><span>tekvicový olej</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="slnecnicovy olej"><span>slnečnicový olej</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="makadamovy olej"><span>makadámový olej</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="olej z vlasskych orechov"><span>olej z vlašských orechov</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Zelenina</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="articoky">artičoky</li>
-				<li data-level-0 data-visible data-match="asparagus">asparágus</li>
-				<li data-level-0 data-visible data-match="brokolica">brokolica</li>
-				<li data-level-0 data-visible data-match="cakanka">čakanka</li>
-				<li data-level-0 data-visible data-match="cibula biela s bielou supkou">cibuľa biela (s bielou šupkou)</li>
-				<li data-level-0 data-visible data-match="cuketa">cuketa</li>
-				<li data-level-0 data-visible data-match="dyna">dyňa</li>
-				<li data-level-0 data-visible data-match="fenikel">fenikel</li>
-				<li data-level-0 data-visible data-match="kapusta cervena cinska">kapusta (červená, čínska)</li>
-				<li data-level-0 data-visible data-match="karfiol">karfiol</li>
-				<li data-level-0 data-visible data-match="mrkva">mrkva</li>
-				<li data-level-0 data-visible data-match="paprika sladka">paprika sladká</li>
-				<li data-level-0 data-visible data-match="pastrnak">paštrnák</li>
-				<li data-level-0 data-visible data-match="polnicek">polníček</li>
-				<li data-level-0 data-visible data-match="redkovka biela cervena">reďkovka: biela, červená</li>
-				<li data-level-0 data-visible data-match="repa biela cervena">repa: biela, červená</li>
-				<li data-level-0 data-visible data-match="salat">šalát</li>
-				<li data-level-0 data-visible data-match="ladovy salat">ľadový šalát</li>
-				<li data-level-0 data-visible data-match="spargla">špargľa</li>
-				<li data-level-0 data-visible data-match="tekvica">tekvica</li>
-				<li data-level-0 data-visible data-match="uhorka">uhorka</li>
-				<li data-level-0 data-visible data-match="zeler">zeler</li>
-				<li data-level-0 data-visible data-match="zerucha">žerucha</li>
-				<li data-level-1 data-visible data-match="cesnak">cesnak</li>
-				<li data-level-1 data-visible data-match="chren">chren</li>
-				<li data-level-1 data-visible data-match="cibula">cibuľa</li>
-				<li data-level-1 data-visible data-match="hrach siaty cerstvy suseny">hrach siaty (čerstvý, sušený)</li>
-				<li data-level-1 data-visible data-match="kalerab">kaleráb</li>
-				<li data-level-1 data-visible data-match="kapusta ruzickova">kapusta ružičková</li>
-				<li data-level-1 data-visible data-match="kel">kel</li>
-				<li data-level-1 data-visible data-match="por">pór</li>
-				<li data-level-1 data-visible data-match="zelene fazulky">zelené fazuľky</li>
-				<li data-level-1 data-visible data-match="rukola">rukola</li>
-				<li data-level-2 data-visible data-match="bob">bôb</li>
-				<li data-level-2 data-visible data-match="cili papricky">čili papričky</li>
-				<li data-level-2 data-visible data-match="baklazan">baklažán</li>
-				<li data-level-2 data-visible data-match="cicer">cícer</li>
-				<li data-level-2 data-visible data-match="fazula borlotti">fazuľa borlotti</li>
-				<li data-level-2 data-visible data-match="zihlava">žihľava</li>
-				<li data-level-2 data-visible data-match="olivy">olivy</li>
-				<li data-level-2 data-visible data-match="paprika stiplava">paprika štipľavá</li>
-				<li data-level-2 data-visible data-match="paradajky">paradajky</li>
-				<li data-level-2 data-visible data-match="rajciaky">rajčiaky</li>
-				<li data-level-2 data-visible data-match="soja boby muka">sója (bôby, múka)</li>
-				<li data-level-2 data-visible data-match="sosovica">šošovica</li>
-				<li data-level-2 data-visible data-match="spenat">špenát</li>
-				<li data-level-2 data-visible data-match="strukoviny soja sosovica hrach fazula">strukoviny (sója, šošovica, hrach, fazuľa)</li>
-				<li data-level-2 data-visible data-match="zavarana zelenina">zaváraná zelenina</li>
-				<li data-level-3 data-visible data-match="kapusta kvasena">kapusta kvasená</li>
-				<li data-level-3 data-visible data-match="kapusta kysla">kapusta kyslá</li>
+				<li data-level-0 data-visible data-match="articoky"><span>artičoky</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="asparagus"><span>asparágus</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="brokolica"><span>brokolica</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="cakanka"><span>čakanka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="cibula biela s bielou supkou"><span>cibuľa biela (s bielou šupkou)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="cuketa"><span>cuketa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="dyna"><span>dyňa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="fenikel"><span>fenikel</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kapusta cervena cinska"><span>kapusta (červená, čínska)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="karfiol"><span>karfiol</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="mrkva"><span>mrkva</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="paprika sladka"><span>paprika sladká</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="pastrnak"><span>paštrnák</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="polnicek"><span>polníček</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="redkovka biela cervena"><span>reďkovka: biela, červená</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="repa biela cervena"><span>repa: biela, červená</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="salat"><span>šalát</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ladovy salat"><span>ľadový šalát</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="spargla"><span>špargľa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tekvica"><span>tekvica</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="uhorka"><span>uhorka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="zeler"><span>zeler</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="zerucha"><span>žerucha</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="cesnak"><span>cesnak</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="chren"><span>chren</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="cibula"><span>cibuľa</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="hrach siaty cerstvy suseny"><span>hrach siaty (čerstvý, sušený)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kalerab"><span>kaleráb</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kapusta ruzickova"><span>kapusta ružičková</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kel"><span>kel</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="por"><span>pór</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zelene fazulky"><span>zelené fazuľky</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="rukola"><span>rukola</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="bob"><span>bôb</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="cili papricky"><span>čili papričky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="baklazan"><span>baklažán</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="cicer"><span>cícer</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="fazula borlotti"><span>fazuľa borlotti</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="zihlava"><span>žihľava</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="olivy"><span>olivy</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="paprika stiplava"><span>paprika štipľavá</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="paradajky"><span>paradajky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="rajciaky"><span>rajčiaky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="soja boby muka"><span>sója (bôby, múka)</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="sosovica"><span>šošovica</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="spenat"><span>špenát</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="strukoviny soja sosovica hrach fazula"><span>strukoviny (sója, šošovica, hrach, fazuľa)</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="zavarana zelenina"><span>zaváraná zelenina</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="kapusta kvasena"><span>kapusta kvasená</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="kapusta kysla"><span>kapusta kyslá</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Ovocie</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="acerola">acerola</li>
-				<li data-level-0 data-visible data-match="banan cukrovy">banán cukrový</li>
-				<li data-level-0 data-visible data-match="baza cierna">baza čierna</li>
-				<li data-level-0 data-visible data-match="broskyna">broskyňa</li>
-				<li data-level-0 data-visible data-match="brusnice">brusnice</li>
-				<li data-level-0 data-visible data-match="ceresne">čerešne</li>
-				<li data-level-0 data-visible data-match="cucoriedky">čučoriedky</li>
-				<li data-level-0 data-visible data-match="datle susene">ďatle (sušené)</li>
-				<li data-level-0 data-visible data-match="dracie ovocie">dračie ovocie</li>
-				<li data-level-0 data-visible data-match="dula">dula</li>
-				<li data-level-0 data-visible data-match="egres">egreš</li>
-				<li data-level-0 data-visible data-match="goji">goji</li>
-				<li data-level-0 data-visible data-match="granatove jablko">granátové jablko</li>
-				<li data-level-0 data-visible data-match="hrozienka">hrozienka</li>
-				<li data-level-0 data-visible data-match="hrozno">hrozno</li>
-				<li data-level-0 data-visible data-match="hurmi kaki">hurmi kaki</li>
-				<li data-level-0 data-visible data-match="jablko">jablko</li>
-				<li data-level-0 data-visible data-match="kakaove maslo">kakaové maslo</li>
-				<li data-level-0 data-visible data-match="kaki">kaki</li>
-				<li data-level-0 data-visible data-match="karambola">karambola</li>
-				<li data-level-0 data-visible data-match="kokos kokosove mlieko">kokos, kokosové mlieko</li>
-				<li data-level-0 data-visible data-match="kustovnica cinska">kustovnica čínska</li>
-				<li data-level-0 data-visible data-match="lici">liči</li>
-				<li data-level-0 data-visible data-match="marhula">marhuľa</li>
-				<li data-level-0 data-visible data-match="melon okrem vodneho melonu">melón (okrem vodného melónu)</li>
-				<li data-level-0 data-visible data-match="nektarinka">nektárinka</li>
-				<li data-level-0 data-visible data-match="ostruzina">ostružina</li>
-				<li data-level-0 data-visible data-match="rakytnik">rakytník</li>
-				<li data-level-0 data-visible data-match="ribezla cervena cierna">ríbezľa červená, čierna</li>
-				<li data-level-0 data-visible data-match="visne">višne</li>
-				<li data-level-1 data-visible data-match="figy cerstve alebo susene">figy (čerstvé, alebo sušené)</li>
-				<li data-level-1 data-visible data-match="hruska">hruška</li>
-				<li data-level-1 data-visible data-match="mango">mango</li>
-				<li data-level-1 data-visible data-match="melon vodovy">melón vodový</li>
-				<li data-level-1 data-visible data-match="rebarbora">rebarbora</li>
-				<li data-level-1 data-visible data-match="sipky">šípky</li>
-				<li data-level-1 data-visible data-match="slivky susene slivky">slivky, sušené slivky</li>
-				<li data-level-2 data-visible data-match="ananas">ananás</li>
-				<li data-level-2 data-visible data-match="avokado">avokádo</li>
-				<li data-level-2 data-visible data-match="zrely banan">zrelý banán</li>
-				<li data-level-2 data-visible data-match="jahoda">jahoda</li>
-				<li data-level-2 data-visible data-match="kakao kakaovy prasok">kakao, kakaový prášok</li>
-				<li data-level-2 data-visible data-match="maliny">maliny</li>
-				<li data-level-2 data-visible data-match="mandarinky">mandarínky</li>
-				<li data-level-2 data-visible data-match="papaja">papája</li>
-				<li data-level-2 data-visible data-match="kiwi">kiwi</li>
-				<li data-level-3 data-visible data-match="limetka">limetka</li>
-				<li data-level-3 data-visible data-match="pomaranc">pomaranč</li>
-				<li data-level-3 data-visible data-match="pomarancova kora">pomarančová kôra</li>
-				<li data-level-3 data-visible data-match="citron">citrón</li>
-				<li data-level-3 data-visible data-match="citronova kora">citrónová kôra</li>
-				<li data-level-3 data-visible data-match="citrusy grapefruit grep">citrusy: grapefruit, grep</li>
+				<li data-level-0 data-visible data-match="acerola"><span>acerola</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="banan cukrovy"><span>banán cukrový</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="baza cierna"><span>baza čierna</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="broskyna"><span>broskyňa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="brusnice"><span>brusnice</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ceresne"><span>čerešne</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="cucoriedky"><span>čučoriedky</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="datle susene"><span>ďatle (sušené)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="dracie ovocie"><span>dračie ovocie</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="dula"><span>dula</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="egres"><span>egreš</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="goji"><span>goji</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="granatove jablko"><span>granátové jablko</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="hrozienka"><span>hrozienka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="hrozno"><span>hrozno</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="hurmi kaki"><span>hurmi kaki</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="jablko"><span>jablko</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kakaove maslo"><span>kakaové maslo</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kaki"><span>kaki</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="karambola"><span>karambola</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kokos kokosove mlieko"><span>kokos, kokosové mlieko</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kustovnica cinska"><span>kustovnica čínska</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="lici"><span>liči</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="marhula"><span>marhuľa</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="melon okrem vodneho melonu"><span>melón (okrem vodného melónu)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="nektarinka"><span>nektárinka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ostruzina"><span>ostružina</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="rakytnik"><span>rakytník</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ribezla cervena cierna"><span>ríbezľa červená, čierna</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="visne"><span>višne</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="figy cerstve alebo susene"><span>figy (čerstvé, alebo sušené)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="hruska"><span>hruška</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="mango"><span>mango</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="melon vodovy"><span>melón vodový</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="rebarbora"><span>rebarbora</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="sipky"><span>šípky</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="slivky susene slivky"><span>slivky, sušené slivky</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="ananas"><span>ananás</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="avokado"><span>avokádo</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="zrely banan"><span>zrelý banán</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="jahoda"><span>jahoda</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="kakao kakaovy prasok"><span>kakao, kakaový prášok</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="maliny"><span>maliny</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="mandarinky"><span>mandarínky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="papaja"><span>papája</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="kiwi"><span>kiwi</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="limetka"><span>limetka</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="pomaranc"><span>pomaranč</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="pomarancova kora"><span>pomarančová kôra</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="citron"><span>citrón</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="citronova kora"><span>citrónová kôra</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="citrusy grapefruit grep"><span>citrusy: grapefruit, grep</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Byliny</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="bazalka">bazalka</li>
-				<li data-level-0 data-visible data-match="mata">mäta</li>
-				<li data-level-0 data-visible data-match="oregano">oregano</li>
-				<li data-level-0 data-visible data-match="petrzlen">petržlen</li>
-				<li data-level-0 data-visible data-match="rozmarin">rozmarín</li>
-				<li data-level-0 data-visible data-match="salvia">šalvia</li>
-				<li data-level-0 data-visible data-match="saturejka">saturejka</li>
-				<li data-level-0 data-visible data-match="majoran">majorán</li>
-				<li data-level-0 data-visible data-match="tymian">tymian</li>
-				<li data-level-0 data-visible data-match="koriander">koriander</li>
-				<li data-level-1 data-visible data-match="cesnak medvedi">cesnak medvedí</li>
-				<li data-level-1 data-visible data-match="pazitka">pažítka</li>
-				<li data-level-1 data-visible data-match="kopor">kôpor</li>
-				<li data-level-2 data-visible data-match="senovka grecka">senovka grécka</li>
-				<li data-level-2 data-visible data-match="zihlava">žihľava</li>
+				<li data-level-0 data-visible data-match="bazalka"><span>bazalka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="mata"><span>mäta</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="oregano"><span>oregano</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="petrzlen"><span>petržlen</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="rozmarin"><span>rozmarín</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="salvia"><span>šalvia</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="saturejka"><span>saturejka</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="majoran"><span>majorán</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tymian"><span>tymian</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="koriander"><span>koriander</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="cesnak medvedi"><span>cesnak medvedí</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="pazitka"><span>pažítka</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kopor"><span>kôpor</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="senovka grecka"><span>senovka grécka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="zihlava"><span>žihľava</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Huby, hríby</h1>
 			<ul>
-				<li data-level-1 data-visible data-match="kvasnice vsetky druhy">kvasnice (všetky druhy)</li>
-				<li data-level-1 data-visible data-match="sampinony">šampiňóny</li>
-				<li data-level-2 data-visible data-match="hrib smrekovy">hríb smrekový</li>
-				<li data-level-2 data-visible data-match="hriby huby">hríby, huby</li>
-				<li data-level-3 data-visible data-match="cervene riasy">červené riasy</li>
-				<li data-level-3 data-visible data-match="chaluhy">chaluhy</li>
-				<li data-level-3 data-visible data-match="hnede riasy">hnedé riasy</li>
-				<li data-level-3 data-visible data-match="morske riasy">morské riasy</li>
-				<li data-level-3 data-visible data-match="riasy">riasy</li>
+				<li data-level-1 data-visible data-match="kvasnice vsetky druhy"><span>kvasnice (všetky druhy)</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="sampinony"><span>šampiňóny</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="hrib smrekovy"><span>hríb smrekový</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="hriby huby"><span>hríby, huby</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="cervene riasy"><span>červené riasy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="chaluhy"><span>chaluhy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="hnede riasy"><span>hnedé riasy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="morske riasy"><span>morské riasy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="riasy"><span>riasy</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Sladidlá</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="agave nektar sirup">agáve nektár, sirup</li>
-				<li data-level-0 data-visible data-match="brezovy cukor xylitol xylit">brezový cukor, xylitol, xylit</li>
-				<li data-level-0 data-visible data-match="cukor repkovy trstinovy">cukor (repkový, trstinový</li>
-				<li data-level-0 data-visible data-match="dextroza">dextróza</li>
-				<li data-level-0 data-visible data-match="sorbitolovy cukor">sorbitolový cukor</li>
-				<li data-level-0 data-visible data-match="fruktoza">fruktóza</li>
-				<li data-level-0 data-visible data-match="glukoza">glukóza</li>
-				<li data-level-0 data-visible data-match="javorovy cukor">javorový cukor</li>
-				<li data-level-0 data-visible data-match="karamel">karamel</li>
-				<li data-level-0 data-visible data-match="laktoza">laktóza</li>
-				<li data-level-0 data-visible data-match="palmovy cukor">palmový cukor</li>
-				<li data-level-0 data-visible data-match="maltoza sladovy cukor">maltóza, sladový cukor</li>
-				<li data-level-0 data-visible data-match="med">med</li>
-				<li data-level-0 data-visible data-match="sacharoza">sacharóza</li>
-				<li data-level-1 data-visible data-match="umele sladidla">umelé sladidlá</li>
-				<li data-level-2 data-visible data-match="koren sladkeho drievka">koreň sladkého drievka</li>
-				<li data-level-2 data-visible data-match="sladovy extrakt">sladový extrakt</li>
+				<li data-level-0 data-visible data-match="agave nektar sirup"><span>agáve nektár, sirup</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="brezovy cukor xylitol xylit"><span>brezový cukor, xylitol, xylit</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="cukor repkovy trstinovy"><span>cukor (repkový, trstinový</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="dextroza"><span>dextróza</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sorbitolovy cukor"><span>sorbitolový cukor</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="fruktoza"><span>fruktóza</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="glukoza"><span>glukóza</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="javorovy cukor"><span>javorový cukor</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="karamel"><span>karamel</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="laktoza"><span>laktóza</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="palmovy cukor"><span>palmový cukor</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="maltoza sladovy cukor"><span>maltóza, sladový cukor</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="med"><span>med</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="sacharoza"><span>sacharóza</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="umele sladidla"><span>umelé sladidlá</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="koren sladkeho drievka"><span>koreň sladkého drievka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="sladovy extrakt"><span>sladový extrakt</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Koreniny, dochucovadlá, arómy</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="jalovec bobule">jalovec (bobule)</li>
-				<li data-level-0 data-visible data-match="kardanom">kardanom</li>
-				<li data-level-0 data-visible data-match="klincek">klinček</li>
-				<li data-level-0 data-visible data-match="kmin">kmín</li>
-				<li data-level-0 data-visible data-match="koriander">koriander</li>
-				<li data-level-0 data-visible data-match="kurkuma">kurkuma</li>
-				<li data-level-0 data-visible data-match="ocot kvasny liehovy">ocot kvasný, liehový</li>
-				<li data-level-0 data-visible data-match="paprika sladka">paprika sladká</li>
-				<li data-level-0 data-visible data-match="rasca">rasca</li>
-				<li data-level-0 data-visible data-match="rasca cierna">rasca čierna</li>
-				<li data-level-0 data-visible data-match="bobkovy list">bobkový list</li>
-				<li data-level-0 data-visible data-match="rimsky koriander">rímsky koriander</li>
-				<li data-level-0 data-visible data-match="skorica">škorica</li>
-				<li data-level-0 data-visible data-match="tymian">tymian</li>
-				<li data-level-0 data-visible data-match="fenikel">fenikel</li>
-				<li data-level-1 data-visible data-match="mak">mak</li>
-				<li data-level-1 data-visible data-match="muskatovy oriesok">muškátový oriešok</li>
-				<li data-level-1 data-visible data-match="jablcny ocot">jablčný ocot</li>
-				<li data-level-1 data-visible data-match="vanilka vanilkovy prasok cukor extrakt">vanilka: vanilkový prášok, cukor, extrakt</li>
-				<li data-level-1 data-visible data-match="zazvor">zázvor</li>
-				<li data-level-2 data-visible data-match="biele korenie">biele korenie</li>
-				<li data-level-2 data-visible data-match="bujony">bujóny</li>
-				<li data-level-2 data-visible data-match="cierne korenie">čierne korenie</li>
-				<li data-level-2 data-visible data-match="zelene korenie">zelené korenie</li>
-				<li data-level-2 data-visible data-match="kari">karí</li>
-				<li data-level-2 data-visible data-match="kvasnicovy extrakt">kvasnicový extrakt</li>
-				<li data-level-2 data-visible data-match="paprika paliva">paprika palivá</li>
-				<li data-level-2 data-visible data-match="rasca rimska">rasca rímska</li>
-				<li data-level-2 data-visible data-match="sojova omacka">sójová omáčka</li>
-				<li data-level-2 data-visible data-match="horcicne semienko">horčičné semienko</li>
-				<li data-level-2 data-visible data-match="klinceky">klinčeky</li>
-				<li data-level-3 data-visible data-match="ocot balzamiko">ocot balzamiko</li>
-				<li data-level-3 data-visible data-match="vinny ocot z bieleho cerveneho vina">vinný ocot (z bieleho, červeného vína)</li>
-				<li data-level-3 data-visible data-match="sojova omacka">sójová omáčka</li>
-				<li data-level-3 data-visible data-match="horcica">horčica</li>
-				<li data-level-3 data-visible data-match="kecup">kečup</li>
+				<li data-level-0 data-visible data-match="jalovec bobule"><span>jalovec (bobule)</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kardanom"><span>kardanom</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="klincek"><span>klinček</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kmin"><span>kmín</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="koriander"><span>koriander</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kurkuma"><span>kurkuma</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="ocot kvasny liehovy"><span>ocot kvasný, liehový</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="paprika sladka"><span>paprika sladká</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="rasca"><span>rasca</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="rasca cierna"><span>rasca čierna</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="bobkovy list"><span>bobkový list</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="rimsky koriander"><span>rímsky koriander</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="skorica"><span>škorica</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="tymian"><span>tymian</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="fenikel"><span>fenikel</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="mak"><span>mak</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="muskatovy oriesok"><span>muškátový oriešok</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="jablcny ocot"><span>jablčný ocot</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="vanilka vanilkovy prasok cukor extrakt"><span>vanilka: vanilkový prášok, cukor, extrakt</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zazvor"><span>zázvor</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="biele korenie"><span>biele korenie</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="bujony"><span>bujóny</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="cierne korenie"><span>čierne korenie</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="zelene korenie"><span>zelené korenie</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="kari"><span>karí</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="kvasnicovy extrakt"><span>kvasnicový extrakt</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="paprika paliva"><span>paprika palivá</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="rasca rimska"><span>rasca rímska</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="sojova omacka"><span>sójová omáčka</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="horcicne semienko"><span>horčičné semienko</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="klinceky"><span>klinčeky</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="ocot balzamiko"><span>ocot balzamiko</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="vinny ocot z bieleho cerveneho vina"><span>vinný ocot (z bieleho, červeného vína)</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="sojova omacka"><span>sójová omáčka</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="horcica"><span>horčica</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="kecup"><span>kečup</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
 				<section>
 			<h1>Nápoje</h1>
 			<ul>
-				<li data-level-0 data-visible data-match="voda z vodovodu">voda z vodovodu</li>
-				<li data-level-0 data-visible data-match="mineralna voda neperliva">minerálna voda, neperlivá</li>
-				<li data-level-0 data-visible data-match="caj verbena">čaj verbena</li>
-				<li data-level-0 data-visible data-match="kamilkovy caj">kamilkový čaj</li>
-				<li data-level-0 data-visible data-match="lipovy caj">lipový čaj</li>
-				<li data-level-0 data-visible data-match="roiboos">roiboos</li>
-				<li data-level-0 data-visible data-match="salviovy caj">šalviový čaj</li>
-				<li data-level-0 data-visible data-match="matovy caj">mätový čaj</li>
-				<li data-level-0 data-visible data-match="brusnicovy nektar">brusnicový nektár</li>
-				<li data-level-0 data-visible data-match="bazovy sirup">bazový sirup</li>
-				<li data-level-1 data-visible data-match="termalna voda s obsahom siry fluoru jodu kyseliny uhlicitej">termálna voda s obsahom síry, fluóru, jódu, kyseliny uhličitej</li>
-				<li data-level-1 data-visible data-match="bylinne caje z liecivych bylin">bylinné čaje z liečivých bylín</li>
-				<li data-level-1 data-visible data-match="mate">maté</li>
-				<li data-level-1 data-visible data-match="zeleny caj">zelený čaj</li>
-				<li data-level-1 data-visible data-match="zihlavovy caj">žihľavový čaj</li>
-				<li data-level-1 data-visible data-match="sipkovy caj">šípkový čaj</li>
-				<li data-level-1 data-visible data-match="pomarancovy dzus">pomarančový džús</li>
-				<li data-level-1 data-visible data-match="limonady">limonády</li>
-				<li data-level-1 data-visible data-match="sladke perlive napoje">sladké perlivé nápoje</li>
-				<li data-level-1 data-visible data-match="soda">sóda</li>
-				<li data-level-1 data-visible data-match="coca cola">coca - cola</li>
-				<li data-level-1 data-visible data-match="cola">cola</li>
-				<li data-level-1 data-visible data-match="kava">káva</li>
-				<li data-level-1 data-visible data-match="espresso">espresso</li>
-				<li data-level-1 data-visible data-match="ovseny napoj">ovsený nápoj</li>
-				<li data-level-1 data-visible data-match="ryzove mlieko">ryžové mlieko</li>
-				<li data-level-1 data-visible data-match="bezhistaminove vino">bezhistamínové víno</li>
-				<li data-level-2 data-visible data-match="paradajkovy dzus">paradajkový džús</li>
-				<li data-level-2 data-visible data-match="energeticke napoje">energetické nápoje</li>
-				<li data-level-2 data-visible data-match="cokoladove napoje">čokoládové nápoje</li>
-				<li data-level-2 data-visible data-match="kakaove napoje">kakaové nápoje</li>
-				<li data-level-2 data-visible data-match="varena cokolada">varená čokoláda</li>
-				<li data-level-2 data-visible data-match="sojove mlieko">sójové mlieko</li>
-				<li data-level-2 data-visible data-match="brandy">brandy</li>
-				<li data-level-2 data-visible data-match="liehovina cira">liehovina, číra</li>
-				<li data-level-2 data-visible data-match="palenka cira">pálenka, číra</li>
-				<li data-level-2 data-visible data-match="pivo">pivo</li>
-				<li data-level-2 data-visible data-match="rum">rum</li>
-				<li data-level-2 data-visible data-match="vino biele">víno biele</li>
-				<li data-level-3 data-visible data-match="cierny caj">čierny čaj</li>
-				<li data-level-3 data-visible data-match="citrusove dzusy">citrusové džúsy</li>
-				<li data-level-3 data-visible data-match="alkohol etanol">alkohol, etanol</li>
-				<li data-level-3 data-visible data-match="liehovina">liehovina</li>
-				<li data-level-3 data-visible data-match="palenka prifarbena ochutena">pálenka prifarbená, ochutená</li>
-				<li data-level-3 data-visible data-match="sampanske">šampanské</li>
-				<li data-level-3 data-visible data-match="sumive vino">šumivé víno</li>
-				<li data-level-3 data-visible data-match="vino">víno</li>
-				<li data-level-3 data-visible data-match="vino cervene">víno červené</li>
+				<li data-level-0 data-visible data-match="voda z vodovodu"><span>voda z vodovodu</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="mineralna voda neperliva"><span>minerálna voda, neperlivá</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="caj verbena"><span>čaj verbena</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="kamilkovy caj"><span>kamilkový čaj</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="lipovy caj"><span>lipový čaj</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="roiboos"><span>roiboos</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="salviovy caj"><span>šalviový čaj</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="matovy caj"><span>mätový čaj</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="brusnicovy nektar"><span>brusnicový nektár</span><span data-level-emoji>✅</span></li>
+				<li data-level-0 data-visible data-match="bazovy sirup"><span>bazový sirup</span><span data-level-emoji>✅</span></li>
+				<li data-level-1 data-visible data-match="termalna voda s obsahom siry fluoru jodu kyseliny uhlicitej"><span>termálna voda s obsahom síry, fluóru, jódu, kyseliny uhličitej</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="bylinne caje z liecivych bylin"><span>bylinné čaje z liečivých bylín</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="mate"><span>maté</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zeleny caj"><span>zelený čaj</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="zihlavovy caj"><span>žihľavový čaj</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="sipkovy caj"><span>šípkový čaj</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="pomarancovy dzus"><span>pomarančový džús</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="limonady"><span>limonády</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="sladke perlive napoje"><span>sladké perlivé nápoje</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="soda"><span>sóda</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="coca cola"><span>coca - cola</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="cola"><span>cola</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="kava"><span>káva</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="espresso"><span>espresso</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="ovseny napoj"><span>ovsený nápoj</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="ryzove mlieko"><span>ryžové mlieko</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-1 data-visible data-match="bezhistaminove vino"><span>bezhistamínové víno</span><span data-level-emoji>⚠️</span></li>
+				<li data-level-2 data-visible data-match="paradajkovy dzus"><span>paradajkový džús</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="energeticke napoje"><span>energetické nápoje</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="cokoladove napoje"><span>čokoládové nápoje</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="kakaove napoje"><span>kakaové nápoje</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="varena cokolada"><span>varená čokoláda</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="sojove mlieko"><span>sójové mlieko</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="brandy"><span>brandy</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="liehovina cira"><span>liehovina, číra</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="palenka cira"><span>pálenka, číra</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="pivo"><span>pivo</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="rum"><span>rum</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-2 data-visible data-match="vino biele"><span>víno biele</span><span data-level-emoji>🚫🚫</span></li>
+				<li data-level-3 data-visible data-match="cierny caj"><span>čierny čaj</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="citrusove dzusy"><span>citrusové džúsy</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="alkohol etanol"><span>alkohol, etanol</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="liehovina"><span>liehovina</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="palenka prifarbena ochutena"><span>pálenka prifarbená, ochutená</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="sampanske"><span>šampanské</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="sumive vino"><span>šumivé víno</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="vino"><span>víno</span><span data-level-emoji>❌❌❌</span></li>
+				<li data-level-3 data-visible data-match="vino cervene"><span>víno červené</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-			</main>
+		
+		<div class="bg-levels" inert>
+			<div class="bg-level-0"></div>
+			<div class="bg-level-1"></div>
+			<div class="bg-level-2"></div>
+			<div class="bg-level-3"></div>
+		</div>
+	</main>
+
+	<a href="https://adamkiss.com" id="brand" target="_blank">
+		<img src="/logo-adamkiss-base.svg" alt="Logo: Adam Kiss" width="60" height="60">
+	</a>
 </body>
 
 </html>

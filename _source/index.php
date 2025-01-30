@@ -496,23 +496,51 @@ $slugify->activateRuleSet('slovak');
 	<title>Tabuľka histamínov</title>
 
 	<?= '<style>' . file_get_contents(__DIR__ . '/index.css') . '</style>'; ?>
+	<script src="/alpinejs@3.14.6.min.js" defer></script>
 </head>
 
 <body>
 	<main>
-		<div class="bg-levels">
-			<div class="bg-level-0"></div>
-			<div class="bg-level-1"></div>
-			<div class="bg-level-2"></div>
-			<div class="bg-level-3"></div>
-		</div>
-
 		<header>
-			<div>Level 0</div>
-			<div>Level 1</div>
-			<div>Level 2</div>
-			<div>Level 3</div>
+			<div class="header"><!-- 🤷🏻 -->
+				<h1>Tabuľka histamínov</h1>
+				<div x-cloak class="search-wrapper"
+					x-data="{items: [], search: ''}"
+					x-init="
+						items = Array.from(document.querySelectorAll('li[data-visible]'))
+							.map(item => ({item, show: true, fmt: item.dataset?.match ?? ''}));
+
+						console . log(items);
+
+						$watch('search', value => {
+							if (!value || value === '' || value.length < 2) {
+								items.forEach(item => item.show = true);
+							} else {
+								const val = value.toLowerCase();
+								if (val.includes(' ')) {
+									val = val.split(' ').filter(v => v.length > 1).join(' ');
+									items.forEach(item => {
+										item.show = val.every(p => item.fmt.includes(p));
+									});
+								} else {
+									items.forEach(item => {
+										item.show = item.fmt.includes(val);
+									});
+								}
+							}
+							items.forEach(item => item.item.toggleAttribute('data-visible', item.show));
+						});
+					"
+				>
+					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search" placeholder="Nájdi mi…" />
+				</div>
+			</div>
+			<div data-level data-level-0><span>Level 0</span> <span data-level-emoji>✅</span></div>
+			<div data-level data-level-1><span>Level 1</span> <span data-level-emoji>⚠️</span></div>
+			<div data-level data-level-2><span>Level 2</span> <span data-level-emoji>🚫🚫</span></div>
+			<div data-level data-level-3><span>Level 3</span> <span data-level-emoji>❌❌❌</span></div>
 		</header>
+
 
 <?php foreach($data as $section => $food) { ?>
 		<section>
@@ -521,17 +549,34 @@ $slugify->activateRuleSet('slovak');
 <?php foreach($food as $level => $items) {
 					foreach ($items as $item) {
 						printf(
-							"\t\t\t\t<li data-level-%d data-visible data-match=\"%s\">%s</li>\n",
+							"\t\t\t\t<li data-level-%d data-visible data-match=\"%s\"><span>%s</span><span data-level-emoji>%s</span></li>\n",
 							$level,
 							$slugify->slugify($item, ' '),
-							$item
+							$item,
+							match ($level) {
+								0 => '✅',
+								1 => '⚠️',
+								2 => '🚫🚫',
+								3 => '❌❌❌',
+							}
 						);
 					}
 				} ?>
 			</ul>
 		</section>
 		<?php } ?>
+
+		<div class="bg-levels" inert>
+			<div class="bg-level-0"></div>
+			<div class="bg-level-1"></div>
+			<div class="bg-level-2"></div>
+			<div class="bg-level-3"></div>
+		</div>
 	</main>
+
+	<a href="https://adamkiss.com" id="brand" target="_blank">
+		<img src="/logo-adamkiss-base.svg" alt="Logo: Adam Kiss" width="60" height="60">
+	</a>
 </body>
 
 </html>
