@@ -503,9 +503,20 @@ $slugify->activateRuleSet('slovak');
 		<header>
 			<div class="header"><!-- 🤷🏻 -->
 				<h1>Tabuľka histamínov</h1>
-				<div x-cloak class="search-wrapper"
-					x-data="{items: [], search: ''}"
-					x-init="
+				<div x-cloak x-data>
+					<select name="jump" id="jump" placeholder="Preskoč na…" x-on:change="
+						document.getElementById($el.value).scrollIntoView({behavior: 'smooth'});
+						$el.value = '...';
+					">
+						<option disabled value="...">Preskoč na…</option>
+						<?php foreach($data as $section => $_) { ?>
+						<option
+							value="<?= $slugify->slugify($section) ?>">
+							<?= $section ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<div x-cloak class="search-wrapper" x-data="{items: [], search: ''}" x-init="
 						items = Array.from(document.querySelectorAll('li[data-visible]'))
 							.map(item => ({item, show: true, fmt: item.dataset?.match ?? ''}));
 
@@ -529,9 +540,9 @@ $slugify->activateRuleSet('slovak');
 							}
 							items.forEach(item => item.item.toggleAttribute('data-visible', item.show));
 						});
-					"
-				>
-					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search" placeholder="Nájdi mi…" />
+					">
+					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search"
+						placeholder="Nájdi mi…" />
 				</div>
 			</div>
 			<div data-level data-level-0><span>Level 0</span> <span data-level-emoji>✅</span></div>
@@ -541,11 +552,13 @@ $slugify->activateRuleSet('slovak');
 		</header>
 
 
-<?php foreach($data as $section => $food) { ?>
-		<section>
-			<h1><?= $section ?></h1>
+		<?php foreach($data as $section => $food) { ?>
+		<section id="<?= $sslug = $slugify->slugify($section) ?>">
+			<h1><span><?= $section ?></span><a
+			href="#<?= $sslug ?>">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-<?php foreach($food as $level => $items) {
+				<?php foreach($food as $level => $items) {
 					foreach ($items as $item) {
 						printf(
 							"\t\t\t\t<li data-level-%d data-visible data-match=\"%s\"><span>%s</span><span data-level-emoji>%s</span></li>\n",
@@ -565,7 +578,7 @@ $slugify->activateRuleSet('slovak');
 		</section>
 		<?php } ?>
 
-		<div class="bg-levels" inert>
+		<div class=" bg-levels" inert>
 			<div class="bg-level-0"></div>
 			<div class="bg-level-1"></div>
 			<div class="bg-level-2"></div>

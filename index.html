@@ -100,13 +100,29 @@ textarea:not([rows]) {
 :root {
 	--bg-light: #f8f8f8;
 	--bg-dark: #222;
+
+	--padding-inline: 0.5rem;
+
+	--step--1: clamp(0.8333rem, 0.8276rem + 0.0287vw, 0.8498rem);
+	--step-0: clamp(1rem, 0.8696rem + 0.6522vw, 1.375rem);
+	--step-1: clamp(1.2rem, 0.8436rem + 1.7822vw, 2.2248rem);
+	--step-2: clamp(1.44rem, 0.6888rem + 3.7559vw, 3.5996rem);
+}
+
+@media (width > 400px) {
+	:root {
+		--padding-inline: 1rem;
+	}
 }
 
 html {
 	color-scheme: light dark;
+	scroll-behavior: smooth;
 }
 
 body {
+	padding: 0;
+	margin: 0;
 	background: light-dark(var(--bg-light), var(--bg-dark));
 	font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
@@ -118,8 +134,30 @@ main {
 }
 
 h1 {
+	font-size: var(--step-1);
+	display: flex;
+	align-items: center;
+	gap: var(--step-0);
+}
+h1 .grow {
+	flex-grow: 1;
+}
+h1 a {
+	font-size: var(--step-0);
+	font-weight: bold;
+	text-decoration: none;
+	background: light-dark(white, black);
+	width: var(--step-1);
+	height: var(--step-1);
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+section h1 {
 	font-weight: 300;
-	font-size: 2em;
+	font-size: var(--step-2);
 }
 
 header,
@@ -136,11 +174,22 @@ header {
 header .header {
 	background: light-dark(var(--bg-light), var(--bg-dark));
 	grid-column: 1 / -1;
-	padding: .5em 1em;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	place-items: center left;
+	padding: .5em var(--padding-inline);
 	z-index: 20;
 }
 header .header h1 {
 	margin-top: 0;
+}
+header .header select {
+	width: 100%;
+	margin-top: var(--step--2);
+}
+header .header .search-wrapper {
+	grid-column: span 2;
+	width: 100%;
 }
 
 #search {
@@ -155,13 +204,13 @@ section {
 
 section h1 {
 	background: light-dark(var(--bg-light), var(--bg-dark));
-	padding: .75em .5em .25em;
+	padding: .75em var(--padding-inline) .25em;
 	margin: 0 0 .25em;
 }
 
 section li, header [data-level] {
 	display: flex;
-	padding: .5em 1em;
+	padding: .5em var(--padding-inline);
 	list-style: none;
 	background: light-dark(var(--bg-light), var(--bg-dark));
 	justify-content: space-between;
@@ -173,6 +222,10 @@ section, header [data-level] {
 
 section li:not([data-visible]) {
 	display: none;
+}
+
+section li [data-level-emoji] {
+	flex-shrink: 0;
 }
 
 section:has([data-visible]) {
@@ -218,7 +271,6 @@ section:has([data-visible]) {
 		/* make grid dense */
 		grid-auto-flow: dense;
 		grid-template-columns: repeat(4, 1fr);
-		;
 	}
 
 	header, section {
@@ -227,15 +279,10 @@ section:has([data-visible]) {
 	}
 
 	header .header {
-		display: flex;
-		align-items: center;
+		grid-template-columns: repeat(4, 1fr);
 	}
-
-	header .header h1, .search-wrapper {
-		width: 50%;
-	}
-	#search {
-		margin-top: 0;
+	header .header select {
+		--step--2: clamp(0.5252rem, 0.7533rem + -0.2943vw, 0.6944rem);
 	}
 
 	header [data-level] {
@@ -299,9 +346,9 @@ section:has([data-visible]) {
 #brand {
 	position: fixed;
 	z-index: 1000;
-	bottom: 1em;
-	right: 1em;
-	margin: var(--step--2);
+	bottom: 0;
+	right: 0;
+	margin: var(--step--1);
 	animation: potato 10s linear infinite;
 }
 
@@ -322,9 +369,57 @@ section:has([data-visible]) {
 		<header>
 			<div class="header"><!-- 🤷🏻 -->
 				<h1>Tabuľka histamínov</h1>
-				<div x-cloak class="search-wrapper"
-					x-data="{items: [], search: ''}"
-					x-init="
+				<div x-cloak x-data>
+					<select name="jump" id="jump" placeholder="Preskoč na…" x-on:change="
+						document.getElementById($el.value).scrollIntoView({behavior: 'smooth'});
+						$el.value = '...';
+					">
+						<option disabled value="...">Preskoč na…</option>
+												<option
+							value="vajcia">
+							Vajcia</option>
+												<option
+							value="mliecne-vyrobky">
+							Mliečne výrobky</option>
+												<option
+							value="maso">
+							Mäso</option>
+												<option
+							value="ryby-a-morske-plody">
+							Ryby a morské plody</option>
+												<option
+							value="rastlinne-potraviny">
+							Rastlinné potraviny</option>
+												<option
+							value="orechy-a-semiacka">
+							Orechy a semiačka</option>
+												<option
+							value="tuky-a-oleje">
+							Tuky a oleje</option>
+												<option
+							value="zelenina">
+							Zelenina</option>
+												<option
+							value="ovocie">
+							Ovocie</option>
+												<option
+							value="byliny">
+							Byliny</option>
+												<option
+							value="huby-hriby">
+							Huby, hríby</option>
+												<option
+							value="sladidla">
+							Sladidlá</option>
+												<option
+							value="koreniny-dochucovadla-aromy">
+							Koreniny, dochucovadlá, arómy</option>
+												<option
+							value="napoje">
+							Nápoje</option>
+											</select>
+				</div>
+				<div x-cloak class="search-wrapper" x-data="{items: [], search: ''}" x-init="
 						items = Array.from(document.querySelectorAll('li[data-visible]'))
 							.map(item => ({item, show: true, fmt: item.dataset?.match ?? ''}));
 
@@ -348,9 +443,9 @@ section:has([data-visible]) {
 							}
 							items.forEach(item => item.item.toggleAttribute('data-visible', item.show));
 						});
-					"
-				>
-					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search" placeholder="Nájdi mi…" />
+					">
+					<input type="search" name="search" id="search" class="" x-model.debounce.300ms="search"
+						placeholder="Nájdi mi…" />
 				</div>
 			</div>
 			<div data-level data-level-0><span>Level 0</span> <span data-level-emoji>✅</span></div>
@@ -360,19 +455,23 @@ section:has([data-visible]) {
 		</header>
 
 
-		<section>
-			<h1>Vajcia</h1>
+				<section id="vajcia">
+			<h1><span>Vajcia</span><a
+			href="#vajcia">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="prepelicie vajcia"><span>prepeličie vajcia</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="prepelicie vajcia"><span>prepeličie vajcia</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="vajecny zltok"><span>vaječný žĺtok</span><span data-level-emoji>✅</span></li>
 				<li data-level-2 data-visible data-match="slepacie vajcia"><span>slepačie vajcia</span><span data-level-emoji>🚫🚫</span></li>
 				<li data-level-2 data-visible data-match="vajecny bielok"><span>vaječný bielok</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Mliečne výrobky</h1>
+				<section id="mliecne-vyrobky">
+			<h1><span>Mliečne výrobky</span><a
+			href="#mliecne-vyrobky">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo"><span>čerstvé maslo, smotanové maslo</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo"><span>čerstvé maslo, smotanové maslo</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kozie mlieko"><span>kozie mlieko</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="ovcie mlieko"><span>ovčie mlieko</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="surove nespracovane mlieko"><span>surové, nespracované mlieko</span><span data-level-emoji>✅</span></li>
@@ -406,10 +505,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="vsetky zrejuce syry"><span>všetky zrejúce syry</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Mäso</h1>
+				<section id="maso">
+			<h1><span>Mäso</span><a
+			href="#maso">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="hovadzie cerstve"><span>hovädzie (čerstvé)</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="hovadzie cerstve"><span>hovädzie (čerstvé)</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="hydina"><span>hydina</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kacacie"><span>kačacie</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="jazyk telaci hovadzi"><span>jazyk (teľací, hovädzí)</span><span data-level-emoji>✅</span></li>
@@ -435,10 +536,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="salama"><span>saláma</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Ryby a morské plody</h1>
+				<section id="ryby-a-morske-plody">
+			<h1><span>Ryby a morské plody</span><a
+			href="#ryby-a-morske-plody">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="pstruh obycajny duhovany"><span>pstruh obyčajný, dúhovaný</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="pstruh obycajny duhovany"><span>pstruh obyčajný, dúhovaný</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="ryba cerstvo chytena hlboko zmrazena"><span>ryba (čerstvo chytená, hlboko zmrazená)</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="sivon americky"><span>sivoň americký</span><span data-level-emoji>✅</span></li>
 				<li data-level-2 data-visible data-match="vsetky druhy morskych plodov"><span>všetky druhy morských plodov</span><span data-level-emoji>🚫🚫</span></li>
@@ -448,10 +551,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="tuniak"><span>tuniak</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Rastlinné potraviny</h1>
+				<section id="rastlinne-potraviny">
+			<h1><span>Rastlinné potraviny</span><a
+			href="#rastlinne-potraviny">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="amarant"><span>amarant</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="amarant"><span>amarant</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="sladke zemiaky bataty"><span>sladké zemiaky, bataty</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="zemiaky"><span>zemiaky</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kamut"><span>kamut</span><span data-level-emoji>✅</span></li>
@@ -479,10 +584,12 @@ section:has([data-visible]) {
 				<li data-level-2 data-visible data-match="slnecnicove semienka"><span>slnečnicové semienka</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Orechy a semiačka</h1>
+				<section id="orechy-a-semiacka">
+			<h1><span>Orechy a semiačka</span><a
+			href="#orechy-a-semiacka">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="makadamove orechy"><span>makadamové orechy</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="makadamove orechy"><span>makadamové orechy</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="para orechy"><span>para orechy</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="tigrie oriesky neprazene"><span>tigrie oriešky, nepražené</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="pistacie"><span>pistácie</span><span data-level-emoji>✅</span></li>
@@ -503,10 +610,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="vlasske orechy"><span>vlašské orechy</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Tuky a oleje</h1>
+				<section id="tuky-a-oleje">
+			<h1><span>Tuky a oleje</span><a
+			href="#tuky-a-oleje">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="kokosovy olej"><span>kokosový olej</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="kokosovy olej"><span>kokosový olej</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="bodliakovy olej"><span>bodliakový olej</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="margarin bez ecok"><span>margarín bez éčok</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="olivovy olej"><span>olivový olej</span><span data-level-emoji>✅</span></li>
@@ -520,10 +629,12 @@ section:has([data-visible]) {
 				<li data-level-2 data-visible data-match="olej z vlasskych orechov"><span>olej z vlašských orechov</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Zelenina</h1>
+				<section id="zelenina">
+			<h1><span>Zelenina</span><a
+			href="#zelenina">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="articoky"><span>artičoky</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="articoky"><span>artičoky</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="asparagus"><span>asparágus</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="brokolica"><span>brokolica</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="cakanka"><span>čakanka</span><span data-level-emoji>✅</span></li>
@@ -575,10 +686,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="kapusta kysla"><span>kapusta kyslá</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Ovocie</h1>
+				<section id="ovocie">
+			<h1><span>Ovocie</span><a
+			href="#ovocie">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="acerola"><span>acerola</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="acerola"><span>acerola</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="banan cukrovy"><span>banán cukrový</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="baza cierna"><span>baza čierna</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="broskyna"><span>broskyňa</span><span data-level-emoji>✅</span></li>
@@ -632,10 +745,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="citrusy grapefruit grep"><span>citrusy: grapefruit, grep</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Byliny</h1>
+				<section id="byliny">
+			<h1><span>Byliny</span><a
+			href="#byliny">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="bazalka"><span>bazalka</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="bazalka"><span>bazalka</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="mata"><span>mäta</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="oregano"><span>oregano</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="petrzlen"><span>petržlen</span><span data-level-emoji>✅</span></li>
@@ -652,10 +767,12 @@ section:has([data-visible]) {
 				<li data-level-2 data-visible data-match="zihlava"><span>žihľava</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Huby, hríby</h1>
+				<section id="huby-hriby">
+			<h1><span>Huby, hríby</span><a
+			href="#huby-hriby">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-1 data-visible data-match="kvasnice vsetky druhy"><span>kvasnice (všetky druhy)</span><span data-level-emoji>⚠️</span></li>
+								<li data-level-1 data-visible data-match="kvasnice vsetky druhy"><span>kvasnice (všetky druhy)</span><span data-level-emoji>⚠️</span></li>
 				<li data-level-1 data-visible data-match="sampinony"><span>šampiňóny</span><span data-level-emoji>⚠️</span></li>
 				<li data-level-2 data-visible data-match="hrib smrekovy"><span>hríb smrekový</span><span data-level-emoji>🚫🚫</span></li>
 				<li data-level-2 data-visible data-match="hriby huby"><span>hríby, huby</span><span data-level-emoji>🚫🚫</span></li>
@@ -666,10 +783,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="riasy"><span>riasy</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Sladidlá</h1>
+				<section id="sladidla">
+			<h1><span>Sladidlá</span><a
+			href="#sladidla">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="agave nektar sirup"><span>agáve nektár, sirup</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="agave nektar sirup"><span>agáve nektár, sirup</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="brezovy cukor xylitol xylit"><span>brezový cukor, xylitol, xylit</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="cukor repkovy trstinovy"><span>cukor (repkový, trstinový</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="dextroza"><span>dextróza</span><span data-level-emoji>✅</span></li>
@@ -688,10 +807,12 @@ section:has([data-visible]) {
 				<li data-level-2 data-visible data-match="sladovy extrakt"><span>sladový extrakt</span><span data-level-emoji>🚫🚫</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Koreniny, dochucovadlá, arómy</h1>
+				<section id="koreniny-dochucovadla-aromy">
+			<h1><span>Koreniny, dochucovadlá, arómy</span><a
+			href="#koreniny-dochucovadla-aromy">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="jalovec bobule"><span>jalovec (bobule)</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="jalovec bobule"><span>jalovec (bobule)</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kardanom"><span>kardanom</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="klincek"><span>klinček</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kmin"><span>kmín</span><span data-level-emoji>✅</span></li>
@@ -729,10 +850,12 @@ section:has([data-visible]) {
 				<li data-level-3 data-visible data-match="kecup"><span>kečup</span><span data-level-emoji>❌❌❌</span></li>
 			</ul>
 		</section>
-				<section>
-			<h1>Nápoje</h1>
+				<section id="napoje">
+			<h1><span>Nápoje</span><a
+			href="#napoje">#</a><span class="grow"> </span><a
+					href="#">↑</a></h1>
 			<ul>
-				<li data-level-0 data-visible data-match="voda z vodovodu"><span>voda z vodovodu</span><span data-level-emoji>✅</span></li>
+								<li data-level-0 data-visible data-match="voda z vodovodu"><span>voda z vodovodu</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="mineralna voda neperliva"><span>minerálna voda, neperlivá</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="caj verbena"><span>čaj verbena</span><span data-level-emoji>✅</span></li>
 				<li data-level-0 data-visible data-match="kamilkovy caj"><span>kamilkový čaj</span><span data-level-emoji>✅</span></li>
@@ -783,7 +906,7 @@ section:has([data-visible]) {
 			</ul>
 		</section>
 		
-		<div class="bg-levels" inert>
+		<div class=" bg-levels" inert>
 			<div class="bg-level-0"></div>
 			<div class="bg-level-1"></div>
 			<div class="bg-level-2"></div>
