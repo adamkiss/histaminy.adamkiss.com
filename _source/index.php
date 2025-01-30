@@ -555,7 +555,7 @@ $slugify->activateRuleSet('slovak');
 		<?php foreach($data as $section => $food) { ?>
 		<section id="<?= $sslug = $slugify->slugify($section) ?>">
 			<h1><span><?= $section ?></span><a
-			href="#<?= $sslug ?>">#</a><span class="grow"> </span><a
+			href="#<?= $sslug ?>" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 				<?php foreach($food as $level => $items) {

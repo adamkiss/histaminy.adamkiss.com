@@ -97,6 +97,25 @@ textarea:not([rows]) {
 	scroll-margin-block: 5ex;
 }
 
+/* Fucking safari */
+input[type="search"]::-webkit-search-cancel-button {
+
+	/* Remove default */
+	-webkit-appearance: none;
+
+	/* Now your own custom styles */
+	 height: 14px;
+	 width: 14px;
+	 display: block;
+	 background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);
+	/* setup all the background tweaks for our custom icon */
+	background-repeat: no-repeat;
+
+	/* icon size */
+	background-size: 14px;
+
+}
+
 :root {
 	--bg-light: #f8f8f8;
 	--bg-dark: #222;
@@ -195,7 +214,7 @@ header .header .search-wrapper {
 #search {
 	margin-top: 0.5em;
 	width: 100%;
-	padding: .25em .5em;
+	padding: .25rem .5rem;
 }
 
 section {
@@ -457,7 +476,7 @@ section:has([data-visible]) {
 
 				<section id="vajcia">
 			<h1><span>Vajcia</span><a
-			href="#vajcia">#</a><span class="grow"> </span><a
+			href="#vajcia" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="prepelicie vajcia"><span>prepeličie vajcia</span><span data-level-emoji>✅</span></li>
@@ -468,7 +487,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="mliecne-vyrobky">
 			<h1><span>Mliečne výrobky</span><a
-			href="#mliecne-vyrobky">#</a><span class="grow"> </span><a
+			href="#mliecne-vyrobky" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="cerstve maslo smotanove maslo"><span>čerstvé maslo, smotanové maslo</span><span data-level-emoji>✅</span></li>
@@ -507,7 +526,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="maso">
 			<h1><span>Mäso</span><a
-			href="#maso">#</a><span class="grow"> </span><a
+			href="#maso" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="hovadzie cerstve"><span>hovädzie (čerstvé)</span><span data-level-emoji>✅</span></li>
@@ -538,7 +557,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="ryby-a-morske-plody">
 			<h1><span>Ryby a morské plody</span><a
-			href="#ryby-a-morske-plody">#</a><span class="grow"> </span><a
+			href="#ryby-a-morske-plody" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="pstruh obycajny duhovany"><span>pstruh obyčajný, dúhovaný</span><span data-level-emoji>✅</span></li>
@@ -553,7 +572,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="rastlinne-potraviny">
 			<h1><span>Rastlinné potraviny</span><a
-			href="#rastlinne-potraviny">#</a><span class="grow"> </span><a
+			href="#rastlinne-potraviny" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="amarant"><span>amarant</span><span data-level-emoji>✅</span></li>
@@ -586,7 +605,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="orechy-a-semiacka">
 			<h1><span>Orechy a semiačka</span><a
-			href="#orechy-a-semiacka">#</a><span class="grow"> </span><a
+			href="#orechy-a-semiacka" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="makadamove orechy"><span>makadamové orechy</span><span data-level-emoji>✅</span></li>
@@ -612,7 +631,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="tuky-a-oleje">
 			<h1><span>Tuky a oleje</span><a
-			href="#tuky-a-oleje">#</a><span class="grow"> </span><a
+			href="#tuky-a-oleje" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="kokosovy olej"><span>kokosový olej</span><span data-level-emoji>✅</span></li>
@@ -631,7 +650,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="zelenina">
 			<h1><span>Zelenina</span><a
-			href="#zelenina">#</a><span class="grow"> </span><a
+			href="#zelenina" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="articoky"><span>artičoky</span><span data-level-emoji>✅</span></li>
@@ -688,7 +707,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="ovocie">
 			<h1><span>Ovocie</span><a
-			href="#ovocie">#</a><span class="grow"> </span><a
+			href="#ovocie" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="acerola"><span>acerola</span><span data-level-emoji>✅</span></li>
@@ -747,7 +766,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="byliny">
 			<h1><span>Byliny</span><a
-			href="#byliny">#</a><span class="grow"> </span><a
+			href="#byliny" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="bazalka"><span>bazalka</span><span data-level-emoji>✅</span></li>
@@ -769,7 +788,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="huby-hriby">
 			<h1><span>Huby, hríby</span><a
-			href="#huby-hriby">#</a><span class="grow"> </span><a
+			href="#huby-hriby" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-1 data-visible data-match="kvasnice vsetky druhy"><span>kvasnice (všetky druhy)</span><span data-level-emoji>⚠️</span></li>
@@ -785,7 +804,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="sladidla">
 			<h1><span>Sladidlá</span><a
-			href="#sladidla">#</a><span class="grow"> </span><a
+			href="#sladidla" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="agave nektar sirup"><span>agáve nektár, sirup</span><span data-level-emoji>✅</span></li>
@@ -809,7 +828,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="koreniny-dochucovadla-aromy">
 			<h1><span>Koreniny, dochucovadlá, arómy</span><a
-			href="#koreniny-dochucovadla-aromy">#</a><span class="grow"> </span><a
+			href="#koreniny-dochucovadla-aromy" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="jalovec bobule"><span>jalovec (bobule)</span><span data-level-emoji>✅</span></li>
@@ -852,7 +871,7 @@ section:has([data-visible]) {
 		</section>
 				<section id="napoje">
 			<h1><span>Nápoje</span><a
-			href="#napoje">#</a><span class="grow"> </span><a
+			href="#napoje" tabindex="0">#</a><span class="grow"> </span><a
 					href="#">↑</a></h1>
 			<ul>
 								<li data-level-0 data-visible data-match="voda z vodovodu"><span>voda z vodovodu</span><span data-level-emoji>✅</span></li>
