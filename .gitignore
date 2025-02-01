@@ -1,2 +1,5 @@
 .DS_Store
 _source/vendor
+_source/main.out.css
+_source/main.min.css
+node_modules

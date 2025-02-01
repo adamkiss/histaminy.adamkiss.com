@@ -1,0 +1,8 @@
+{
+  "name": "histaminy.adamkiss.com",
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.1",
+    "tailwindcss": "^4.0.1"
+  }
+}

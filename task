@@ -2,12 +2,16 @@
 # shellcheck shell=bash
 
 dev () { #: prepare stuff and watch
-	php -S localhost:8000 -t _source
+	trap './task prod; exit 0' SIGINT
+
+	php -S localhost:8000 -t _source &
+	bunx tailwindcss -i _source/main.css -o _source/main.out.css --watch
 }
 
 prod () { #: run through the whole pipeline
+	bunx tailwindcss -i _source/main.css -o _source/main.min.css --minify
 	php -S localhost:8000 -t _source &
-	http localhost:8000 > index.html
+	http 'localhost:8000/?build' > index.html
 	kill -9 $(pgrep -f 'localhost:8000')
 }
 
